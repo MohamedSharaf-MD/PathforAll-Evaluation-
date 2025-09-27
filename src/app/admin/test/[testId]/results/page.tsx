@@ -183,8 +183,8 @@ export default function TestResultsPage() {
       // Transform assignments to test results
       const results: TestResult[] = assignments?.map(assignment => {
         const userResponses = responsesMap.get(assignment.user_id) || []
-        const correctAnswers = userResponses.filter(r => r.is_correct).length
-        const totalTimeSeconds = userResponses.reduce((sum, r) => sum + r.time_spent_seconds, 0)
+        const correctAnswers = userResponses.filter((r: { is_correct: boolean }) => r.is_correct).length
+        const totalTimeSeconds = userResponses.reduce((sum: number, r: { time_spent_seconds: number }) => sum + r.time_spent_seconds, 0)
         const totalTimeMinutes = Math.round(totalTimeSeconds / 60)
         const averageTimePerCase = userResponses.length > 0 ? Math.round(totalTimeSeconds / userResponses.length) : 0
         const accuracyPercentage = userResponses.length > 0 ? Math.round((correctAnswers / userResponses.length) * 100) : 0
