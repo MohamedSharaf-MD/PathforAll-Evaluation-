@@ -286,7 +286,7 @@ export default function TestResultsPage() {
       const headers = Object.keys(csvData[0] || {})
       const csvContent = [
         headers.join(','),
-        ...csvData.map(row => headers.map(header => `"${row[header]}"`).join(','))
+        ...csvData.map((row: Record<string, string | number>) => headers.map((header: string) => `"${row[header]}"`).join(','))
       ].join('\n')
 
       const blob = new Blob([csvContent], { type: 'text/csv' })
