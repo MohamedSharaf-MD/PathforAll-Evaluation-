@@ -24,3 +24,48 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Ensure all text inputs have black text */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  color: #000000 !important;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder,
+input[type="number"]::placeholder,
+textarea::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Ensure all text is visible */
+.text-gray-500,
+.text-gray-600,
+.text-gray-700 {
+  color: #374151 !important;
+}
+
+/* Override any light gray text */
+.text-gray-400 {
+  color: #6b7280 !important;
+}
+
+/* Ensure form labels are dark */
+label {
+  color: #374151 !important;
+}
+
+/* Ensure all paragraph text is dark */
+p {
+  color: #374151 !important;
+}
+
+/* Ensure table text is dark */
+td, th {
+  color: #374151 !important;
+}

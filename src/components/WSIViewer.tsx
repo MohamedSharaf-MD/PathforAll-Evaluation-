@@ -1,0 +1,157 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
+
+declare global {
+  interface Window {
+    OpenSeadragon: any;
+  }
+}
+
+interface WSIViewerProps {
+  slidePath: string  // e.g., "slides/ME-052"
+  slideWidth: number
+  slideHeight: number
+  maxLevel?: number
+  width?: string
+  height?: string
+}
+
+export default function WSIViewer({ 
+  slidePath, 
+  slideWidth, 
+  slideHeight, 
+  maxLevel = 9,
+  width = '100%', 
+  height = '600px' 
+}: WSIViewerProps) {
+  const viewerRef = useRef<HTMLDivElement>(null)
+  const osdViewer = useRef<any>(null)
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js'
+    script.onload = () => {
+      if (viewerRef.current && !osdViewer.current && window.OpenSeadragon) {
+        try {
+          const customTileSource = {
+            height: slideHeight,
+            width: slideWidth,
+            tileSize: 256,
+            tileOverlap: 1,
+            minLevel: 0,
+            maxLevel: maxLevel,
+            getTileUrl: function(level, x, y) {
+              return `https://dpyczcjhun2r2.cloudfront.net/${slidePath}/slide_files/${level}/${x}_${y}.jpg`
+            }
+          }
+
+          osdViewer.current = window.OpenSeadragon({
+            element: viewerRef.current,
+            tileSources: [customTileSource],
+            showNavigator: true,
+            showRotationControl: true,
+            showHomeControl: true,
+            showFullPageControl: true,
+            showZoomControl: true,
+            mouseNavEnabled: true,
+            animationTime: 0.5,
+            timeout: 30000,
+            // Enhanced control styling
+            controlsFadeDelay: 0,
+            controlsFadeLength: 0,
+            // Custom button styling
+            prefixUrl: 'https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/',
+            // Ensure icons are visible
+            showSequenceControl: false,
+            showReferenceStrip: false
+          })
+
+          // Add custom CSS for better icon visibility
+          const style = document.createElement('style')
+          style.textContent = `
+            .openseadragon-container {
+              background-color: #000 !important;
+            }
+            .openseadragon-canvas {
+              background-color: #000 !important;
+            }
+            .openseadragon-control {
+              background-color: rgba(0, 0, 0, 0.8) !important;
+              border: 1px solid #fff !important;
+              border-radius: 4px !important;
+            }
+            .openseadragon-button {
+              background-color: rgba(0, 0, 0, 0.8) !important;
+              border: 1px solid #fff !important;
+              color: #fff !important;
+              font-weight: bold !important;
+              text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8) !important;
+            }
+            .openseadragon-button:hover {
+              background-color: rgba(255, 255, 255, 0.2) !important;
+            }
+            .openseadragon-button:active {
+              background-color: rgba(255, 255, 255, 0.4) !important;
+            }
+            .openseadragon-zoom-in,
+            .openseadragon-zoom-out,
+            .openseadragon-home,
+            .openseadragon-fullpage,
+            .openseadragon-rotateleft,
+            .openseadragon-rotateright {
+              background-image: none !important;
+              color: #fff !important;
+              font-size: 16px !important;
+              font-weight: bold !important;
+              text-align: center !important;
+              line-height: 20px !important;
+            }
+            .openseadragon-zoom-in:before {
+              content: "+" !important;
+            }
+            .openseadragon-zoom-out:before {
+              content: "−" !important;
+            }
+            .openseadragon-home:before {
+              content: "⌂" !important;
+            }
+            .openseadragon-fullpage:before {
+              content: "⛶" !important;
+            }
+            .openseadragon-rotateleft:before {
+              content: "↶" !important;
+            }
+            .openseadragon-rotateright:before {
+              content: "↷" !important;
+            }
+            .openseadragon-navigator {
+              border: 2px solid #fff !important;
+              background-color: rgba(0, 0, 0, 0.8) !important;
+            }
+          `
+          document.head.appendChild(style)
+
+        } catch (error) {
+          console.error('Error initializing OpenSeadragon:', error)
+        }
+      }
+    }
+    document.head.appendChild(script)
+
+    return () => {
+      if (osdViewer.current) {
+        osdViewer.current.destroy()
+        osdViewer.current = null
+      }
+    }
+  }, [slidePath, slideWidth, slideHeight, maxLevel])
+
+  return (
+    <div 
+      ref={viewerRef} 
+      style={{ width, height }}
+      className="border border-gray-300 rounded-lg bg-black relative"
+    />
+  )
+}
