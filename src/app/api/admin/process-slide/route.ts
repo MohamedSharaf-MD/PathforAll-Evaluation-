@@ -180,7 +180,7 @@ async function uploadTilesToS3(outputDir: string, caseId: string): Promise<strin
 
     // Upload all tile files
     const tilesDir = path.join(outputDir, 'slide_files')
-    const uploadPromises: Promise<any>[] = []
+    const uploadPromises: Promise<AWS.S3.ManagedUpload.SendData>[] = []
 
     async function uploadDirectory(dirPath: string, s3Prefix: string) {
       const entries = await fs.promises.readdir(dirPath, { withFileTypes: true })
