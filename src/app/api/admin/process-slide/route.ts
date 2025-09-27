@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Slide processing error:', error)
     return NextResponse.json({ 
-      message: `Processing failed: ${error.message}` 
+      message: `Processing failed: ${error instanceof Error ? error.message : 'Unknown error'}` 
     }, { status: 500 })
   }
 }
