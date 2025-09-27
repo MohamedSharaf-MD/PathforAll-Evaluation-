@@ -72,7 +72,7 @@ export default function TestResultsPage() {
   const [loadingDetails, setLoadingDetails] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'completed' | 'in_progress' | 'pending'>('all')
-  const [sortBy, setSortBy] = useState<'name' | 'accuracy' | 'time' | 'completed'>('name')
+  const [sortBy, setSortBy] = useState<'name' | 'accuracy' | 'time' | 'status'>('name')
 
   useEffect(() => {
     checkAdminAccess()
