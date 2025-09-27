@@ -20,7 +20,7 @@ export default function Footer() {
             <h4 className="text-md font-medium">Development</h4>
             <div className="text-gray-300 text-sm space-y-2">
               <p>Developed by <span className="font-medium text-white">Mohamed Sharaf, MD</span></p>
-              <p>From Christopher Park's Lab</p>
+              <p>From Christopher Park&apos;s Lab</p>
               <p className="text-xs text-gray-400 mt-3">
                 For technical support or development inquiries:
               </p>

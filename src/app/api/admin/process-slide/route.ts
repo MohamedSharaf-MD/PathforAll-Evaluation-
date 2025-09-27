@@ -5,6 +5,7 @@ import { promisify } from 'util'
 import path from 'path'
 import fs from 'fs'
 import { v4 as uuidv4 } from 'uuid'
+import AWS from 'aws-sdk'
 
 const execAsync = promisify(exec)
 
@@ -157,8 +158,6 @@ async function convertToTiles(inputPath: string, outputDir: string, caseId: stri
 
 async function uploadTilesToS3(outputDir: string, caseId: string): Promise<string> {
   try {
-    const AWS = require('aws-sdk')
-    
     const s3 = new AWS.S3({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,

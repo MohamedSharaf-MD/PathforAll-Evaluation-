@@ -165,7 +165,7 @@ export default function CertificateModal({ isOpen, onClose, certificateData }: C
                 <p className="text-xl text-gray-700">This is to certify that</p>
                 <h4 className="text-2xl font-bold text-indigo-800">{certificateData.userName || 'User'}</h4>
                 <p className="text-xl text-gray-700">has successfully completed the</p>
-                <h5 className="text-xl font-bold text-indigo-800">"{certificateData.testTitle || 'Test'}"</h5>
+                <h5 className="text-xl font-bold text-indigo-800">&ldquo;{certificateData.testTitle || 'Test'}&rdquo;</h5>
               </div>
 
               <div className="mt-8 bg-white rounded-lg p-6 shadow-sm">
@@ -191,7 +191,7 @@ export default function CertificateModal({ isOpen, onClose, certificateData }: C
               </div>
 
               <div className="mt-8 text-sm text-gray-700">
-                <p className="font-semibold">Christopher Park's Lab</p>
+                <p className="font-semibold">Christopher Park&apos;s Lab</p>
                 <p className="font-semibold">New York University Langone Health</p>
               </div>
             </div>
