@@ -50,7 +50,7 @@ export default function CreateTestPage() {
   const [editingCase, setEditingCase] = useState<TestCase | null>(null)
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [availableSlides, setAvailableSlides] = useState<any[]>([])
+  const [availableSlides, setAvailableSlides] = useState<{ id: string; slide_path: string; slide_name: string; slide_width: number; slide_height: number; max_level: number }[]>([])
 
   useEffect(() => {
     if (editingCase) {

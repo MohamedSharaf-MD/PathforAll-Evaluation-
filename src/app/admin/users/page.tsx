@@ -392,7 +392,7 @@ export default function UserManagementPage() {
             
             <select
               value={roleFilter}
-              onChange={(e) => setRoleFilter(e.target.value as any)}
+              onChange={(e) => setRoleFilter(e.target.value as 'all' | 'admin' | 'pathologist')}
               className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="all">All Roles</option>
@@ -613,7 +613,7 @@ export default function UserManagementPage() {
                   </label>
                   <select
                     value={newUser.role}
-                    onChange={(e) => setNewUser({ ...newUser, role: e.target.value as any })}
+                    onChange={(e) => setNewUser({ ...newUser, role: e.target.value as 'admin' | 'pathologist' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="pathologist">Pathologist</option>
