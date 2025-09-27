@@ -301,7 +301,7 @@ export default function UserManagementPage() {
       await loadUsers()
     } catch (error) {
       console.error('Error deleting user:', error)
-      alert(`Failed to delete user: ${error.message || 'Unknown error'}`)
+      alert(`Failed to delete user: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
