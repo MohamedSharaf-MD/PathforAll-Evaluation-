@@ -9,11 +9,9 @@ import {
   Plus, 
   X, 
   Save, 
-  Eye,
   AlertCircle,
   CheckCircle,
-  FileImage,
-  Trash2
+  FileImage
 } from 'lucide-react'
 import WSIViewer from '@/components/WSIViewer'
 
@@ -22,7 +20,6 @@ interface TestCase {
   title: string
   question: string
   choices: string[]
-  correctAnswer: string
   slideFile?: File
   slidePath?: string
   slideWidth: number
@@ -51,6 +48,9 @@ export default function CreateTestPage() {
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [availableSlides, setAvailableSlides] = useState<{ id: string; slide_path: string; slide_name: string; slide_width: number; slide_height: number; max_level: number }[]>([])
+  const [showTemplateModal, setShowTemplateModal] = useState(false)
+  const [templateCase, setTemplateCase] = useState<TestCase | null>(null)
+  const [selectedSlidesForTemplate, setSelectedSlidesForTemplate] = useState<string[]>([])
 
   useEffect(() => {
     if (editingCase) {
@@ -78,7 +78,6 @@ export default function CreateTestPage() {
     title: '',
     question: '',
     choices: ['', '', '', ''],
-    correctAnswer: '',
     slideWidth: 119040,
     slideHeight: 25344,
     maxLevel: 9,
@@ -118,10 +117,6 @@ export default function CreateTestPage() {
     const validChoices = testCase.choices.filter(choice => choice.trim())
     if (validChoices.length < 2) {
       newErrors.caseChoices = 'At least 2 answer choices are required'
-    }
-    
-    if (!testCase.correctAnswer.trim() || !testCase.choices.includes(testCase.correctAnswer)) {
-      newErrors.correctAnswer = 'Must select a valid correct answer'
     }
     
     if (!testCase.slidePath) {
@@ -166,6 +161,47 @@ export default function CreateTestPage() {
     }))
   }
 
+  const openTemplateModal = () => {
+    if (testSession.cases.length === 0) {
+      setErrors({ template: 'Please create at least one case first to use as a template' })
+      return
+    }
+    setShowTemplateModal(true)
+    setTemplateCase(null)
+    setSelectedSlidesForTemplate([])
+  }
+
+  const createCasesFromTemplate = () => {
+    if (!templateCase || selectedSlidesForTemplate.length === 0) {
+      setErrors({ template: 'Please select a template case and at least one slide' })
+      return
+    }
+
+    const newCases: TestCase[] = selectedSlidesForTemplate.map((slidePath, index) => {
+      const selectedSlide = availableSlides.find(s => s.slide_path === slidePath)
+      return {
+        ...templateCase,
+        id: Math.random().toString(36).substr(2, 9),
+        slidePath: slidePath,
+        slideWidth: selectedSlide?.slide_width || 119040,
+        slideHeight: selectedSlide?.slide_height || 25344,
+        maxLevel: selectedSlide?.max_level || 9,
+        caseOrder: testSession.cases.length + index + 1,
+        title: `${templateCase.title} - Case ${testSession.cases.length + index + 1}`
+      }
+    })
+
+    setTestSession(prev => ({
+      ...prev,
+      cases: [...prev.cases, ...newCases]
+    }))
+
+    setShowTemplateModal(false)
+    setTemplateCase(null)
+    setSelectedSlidesForTemplate([])
+    setErrors({})
+  }
+
   const saveTestSession = async () => {
     if (testSession.cases.length === 0) {
       setErrors({ cases: 'At least one case is required' })
@@ -199,7 +235,6 @@ export default function CreateTestPage() {
         title: testCase.title,
         question: testCase.question,
         choices: testCase.choices.filter(choice => choice.trim()),
-        correct_answer: testCase.correctAnswer,
         slide_url: testCase.slidePath || '',
         case_order: testCase.caseOrder
       }))
@@ -378,13 +413,24 @@ export default function CreateTestPage() {
                 <div className="mb-6">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold text-gray-900">Test Cases ({testSession.cases.length})</h2>
-                    <button
-                      onClick={addCase}
-                      className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center space-x-2"
-                    >
-                      <Plus className="h-4 w-4" />
-                      <span>Add Case</span>
-                    </button>
+                    <div className="flex space-x-3">
+                      {testSession.cases.length > 0 && (
+                        <button
+                          onClick={openTemplateModal}
+                          className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center space-x-2"
+                        >
+                          <Plus className="h-4 w-4" />
+                          <span>Create from Template</span>
+                        </button>
+                      )}
+                      <button
+                        onClick={addCase}
+                        className="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex items-center space-x-2"
+                      >
+                        <Plus className="h-4 w-4" />
+                        <span>Add Case</span>
+                      </button>
+                    </div>
                   </div>
 
                   {testSession.cases.length === 0 ? (
@@ -460,6 +506,10 @@ export default function CreateTestPage() {
                 
                 {errors.cases && (
                   <p className="mt-4 text-sm text-red-600 text-center">{errors.cases}</p>
+                )}
+                
+                {errors.template && (
+                  <p className="mt-4 text-sm text-red-600 text-center">{errors.template}</p>
                 )}
               </div>
             ) : (
@@ -537,28 +587,6 @@ export default function CreateTestPage() {
                       )}
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Correct Answer *
-                      </label>
-                      <select
-                        value={editingCase.correctAnswer}
-                        onChange={(e) => setEditingCase(prev => prev ? { ...prev, correctAnswer: e.target.value } : null)}
-                        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
-                          errors.correctAnswer ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                      >
-                        <option value="">Select correct answer...</option>
-                        {editingCase.choices.filter(choice => choice.trim()).map((choice, index) => (
-                          <option key={index} value={choice}>
-                            {String.fromCharCode(65 + index)}. {choice}
-                          </option>
-                        ))}
-                      </select>
-                      {errors.correctAnswer && (
-                        <p className="mt-1 text-sm text-red-600">{errors.correctAnswer}</p>
-                      )}
-                    </div>
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -691,9 +719,6 @@ export default function CreateTestPage() {
                               <span className="text-sm text-gray-500">
                                 {testCase.choices.filter(c => c.trim()).length} choices
                               </span>
-                              <span className="ml-4 text-sm text-green-600">
-                                Correct: {testCase.correctAnswer}
-                              </span>
                             </div>
                           </div>
                           <div className="text-sm text-gray-500">
@@ -745,6 +770,114 @@ export default function CreateTestPage() {
           </div>
         )}
       </div>
+
+      {/* Template Modal */}
+      {showTemplateModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Create Cases from Template</h2>
+                <button
+                  onClick={() => setShowTemplateModal(false)}
+                  className="text-gray-400 hover:text-gray-600"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                {/* Template Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Template Case *
+                  </label>
+                  <select
+                    value={templateCase?.id || ''}
+                    onChange={(e) => {
+                      const selectedCase = testSession.cases.find(c => c.id === e.target.value)
+                      setTemplateCase(selectedCase || null)
+                    }}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  >
+                    <option value="">Choose a template case...</option>
+                    {testSession.cases.map(testCase => (
+                      <option key={testCase.id} value={testCase.id}>
+                        {testCase.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Template Preview */}
+                {templateCase && (
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="font-medium text-gray-900 mb-2">Template Preview</h3>
+                    <div className="space-y-2 text-sm">
+                      <p><strong>Title:</strong> {templateCase.title}</p>
+                      <p><strong>Question:</strong> {templateCase.question}</p>
+                      <p><strong>Choices:</strong> {templateCase.choices.filter(c => c.trim()).join(', ')}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Slide Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Slides for New Cases *
+                  </label>
+                  <div className="max-h-60 overflow-y-auto border border-gray-300 rounded-lg p-4">
+                    {availableSlides.map(slide => (
+                      <label key={slide.id} className="flex items-center space-x-3 py-2">
+                        <input
+                          type="checkbox"
+                          checked={selectedSlidesForTemplate.includes(slide.slide_path)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedSlidesForTemplate(prev => [...prev, slide.slide_path])
+                            } else {
+                              setSelectedSlidesForTemplate(prev => prev.filter(path => path !== slide.slide_path))
+                            }
+                          }}
+                          className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        />
+                        <span className="text-sm text-gray-900">
+                          {slide.slide_name} ({slide.slide_width}x{slide.slide_height})
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-sm text-gray-500">
+                    {selectedSlidesForTemplate.length} slide(s) selected
+                  </p>
+                </div>
+
+                {errors.template && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                    {errors.template}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end space-x-4 mt-8">
+                <button
+                  onClick={() => setShowTemplateModal(false)}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={createCasesFromTemplate}
+                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 flex items-center space-x-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Create {selectedSlidesForTemplate.length} Cases</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -33,8 +33,6 @@ interface TestResult {
   completed_at?: string
   total_cases: number
   completed_cases: number
-  correct_answers: number
-  accuracy_percentage: number
   total_time_minutes: number
   average_time_per_case: number
 }
@@ -45,8 +43,6 @@ interface CaseResponse {
   case_title: string
   case_number: number
   user_answer: string
-  correct_answer: string
-  is_correct: boolean
   time_spent_seconds: number
   answered_at: string
 }
@@ -72,7 +68,7 @@ export default function TestResultsPage() {
   const [loadingDetails, setLoadingDetails] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'completed' | 'in_progress' | 'pending'>('all')
-  const [sortBy, setSortBy] = useState<'name' | 'accuracy' | 'time' | 'status'>('name')
+  const [sortBy, setSortBy] = useState<'name' | 'time' | 'completed' | 'status'>('name')
 
   useEffect(() => {
     checkAdminAccess()
@@ -142,8 +138,7 @@ export default function TestResultsPage() {
           cases!inner(
             id,
             title,
-            case_number,
-            correct_answer
+            case_number
           )
         `)
         .in('user_id', userIds)
@@ -183,11 +178,9 @@ export default function TestResultsPage() {
       // Transform assignments to test results
       const results: TestResult[] = assignments?.map(assignment => {
         const userResponses = responsesMap.get(assignment.user_id) || []
-        const correctAnswers = userResponses.filter((r: { is_correct: boolean }) => r.is_correct).length
         const totalTimeSeconds = userResponses.reduce((sum: number, r: { time_spent_seconds: number }) => sum + r.time_spent_seconds, 0)
         const totalTimeMinutes = Math.round(totalTimeSeconds / 60)
         const averageTimePerCase = userResponses.length > 0 ? Math.round(totalTimeSeconds / userResponses.length) : 0
-        const accuracyPercentage = userResponses.length > 0 ? Math.round((correctAnswers / userResponses.length) * 100) : 0
 
         return {
           id: assignment.id,
@@ -204,8 +197,6 @@ export default function TestResultsPage() {
           completed_at: assignment.completed_at,
           total_cases: totalCases,
           completed_cases: userResponses.length,
-          correct_answers: correctAnswers,
-          accuracy_percentage: accuracyPercentage,
           total_time_minutes: totalTimeMinutes,
           average_time_per_case: averageTimePerCase
         }
@@ -229,8 +220,7 @@ export default function TestResultsPage() {
           cases!inner(
             id,
             title,
-            case_number,
-            correct_answer
+            case_number
           )
         `)
         .eq('user_id', result.user_id)
@@ -245,8 +235,6 @@ export default function TestResultsPage() {
         case_title: response.cases?.title || 'Untitled Case',
         case_number: response.cases?.case_number || 0,
         user_answer: response.selected_answer,
-        correct_answer: response.cases?.correct_answer || '',
-        is_correct: response.selected_answer === response.cases?.correct_answer,
         time_spent_seconds: response.time_spent_seconds,
         answered_at: response.created_at
       })) || []
@@ -275,8 +263,6 @@ export default function TestResultsPage() {
         'Status': result.status,
         'Completed Cases': result.completed_cases,
         'Total Cases': result.total_cases,
-        'Correct Answers': result.correct_answers,
-        'Accuracy %': result.accuracy_percentage,
         'Total Time (min)': result.total_time_minutes,
         'Avg Time per Case (sec)': result.average_time_per_case,
         'Assigned At': new Date(result.assigned_at).toLocaleString('en-US', { timeZone: 'America/New_York' }),
@@ -354,12 +340,12 @@ export default function TestResultsPage() {
 
   const sortedResults = [...filteredResults].sort((a, b) => {
     switch (sortBy) {
-      case 'accuracy':
-        return b.accuracy_percentage - a.accuracy_percentage
       case 'time':
         return a.total_time_minutes - b.total_time_minutes
-      case 'status':
+      case 'completed':
         return b.completed_cases - a.completed_cases
+      case 'status':
+        return a.status.localeCompare(b.status)
       default:
         return a.user_name.localeCompare(b.user_name)
     }
@@ -434,13 +420,13 @@ export default function TestResultsPage() {
 
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as 'name' | 'accuracy' | 'time' | 'status')}
+              onChange={(e) => setSortBy(e.target.value as 'name' | 'time' | 'completed' | 'status')}
               className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="name">Sort by Name</option>
-              <option value="accuracy">Sort by Accuracy</option>
               <option value="time">Sort by Time</option>
               <option value="completed">Sort by Completed Cases</option>
+              <option value="status">Sort by Status</option>
             </select>
           </div>
         </div>
@@ -465,9 +451,6 @@ export default function TestResultsPage() {
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Progress
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Accuracy
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Time
@@ -517,10 +500,10 @@ export default function TestResultsPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="text-sm font-medium text-gray-900">
-                        {result.accuracy_percentage}%
+                        {result.completed_cases}/{result.total_cases} cases
                       </div>
                       <div className="text-xs text-gray-500">
-                        {result.correct_answers}/{result.completed_cases} correct
+                        {result.status === 'completed' ? 'Completed' : 'In Progress'}
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -571,22 +554,18 @@ export default function TestResultsPage() {
               ) : (
                 <div className="space-y-4">
                   {/* Summary Stats */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-indigo-600">{selectedResult.accuracy_percentage}%</div>
-                      <div className="text-sm text-gray-500">Accuracy</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600">{selectedResult.correct_answers}</div>
-                      <div className="text-sm text-gray-500">Correct</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-red-600">{selectedResult.completed_cases - selectedResult.correct_answers}</div>
-                      <div className="text-sm text-gray-500">Incorrect</div>
+                      <div className="text-2xl font-bold text-indigo-600">{selectedResult.completed_cases}</div>
+                      <div className="text-sm text-gray-500">Cases Completed</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-purple-600">{selectedResult.total_time_minutes}</div>
-                      <div className="text-sm text-gray-500">Minutes</div>
+                      <div className="text-sm text-gray-500">Total Minutes</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-green-600">{formatTime(selectedResult.average_time_per_case)}</div>
+                      <div className="text-sm text-gray-500">Avg per Case</div>
                     </div>
                   </div>
 
@@ -597,7 +576,6 @@ export default function TestResultsPage() {
                         <tr>
                           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Case</th>
                           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Answer</th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Correct</th>
                           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
                         </tr>
                       </thead>
@@ -609,13 +587,6 @@ export default function TestResultsPage() {
                             </td>
                             <td className="px-4 py-2 text-sm text-gray-900">
                               {response.user_answer}
-                            </td>
-                            <td className="px-4 py-2 text-sm">
-                              {response.is_correct ? (
-                                <span className="text-green-600 font-medium">✓ Correct</span>
-                              ) : (
-                                <span className="text-red-600 font-medium">✗ Incorrect</span>
-                              )}
                             </td>
                             <td className="px-4 py-2 text-sm text-gray-900">
                               {formatTime(response.time_spent_seconds)}

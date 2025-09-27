@@ -9,15 +9,8 @@ import {
   Users, 
   FileText, 
   BarChart3, 
-  Settings, 
-  Upload,
   Download,
-  Eye,
-  Edit,
-  Trash2,
-  Clock,
   CheckCircle,
-  AlertCircle,
   Search
 } from 'lucide-react'
 
@@ -233,7 +226,6 @@ export default function AdminDashboard() {
             id,
             case_number,
             title,
-            correct_answer,
             test_session_id
           )
         `)
@@ -261,17 +253,18 @@ export default function AdminDashboard() {
         responsesByUser.get(userId).push(response)
       })
 
-      // Create CSV data
-      const csvData = assignments.map((assignment: { user_id: string; status: string; assigned_at: string; completed_at: string }) => {
+      // Create detailed CSV data with individual case responses
+      const csvData: Record<string, string | number>[] = []
+      
+      assignments.forEach((assignment: { user_id: string; status: string; assigned_at: string; completed_at: string }) => {
         const userProfile = userProfilesMap.get(assignment.user_id)
         const userResponses = responsesByUser.get(assignment.user_id) || []
-        const correctAnswers = userResponses.filter((r: { selected_answer: string; cases?: { correct_answer: string } }) => r.selected_answer === r.cases?.correct_answer).length
         const totalCases = userResponses.length
-        const accuracy = totalCases > 0 ? Math.round((correctAnswers / totalCases) * 100) : 0
         const totalTimeSeconds = userResponses.reduce((sum: number, r: { time_spent_seconds: number }) => sum + (r.time_spent_seconds || 0), 0)
         const totalTimeMinutes = Math.round(totalTimeSeconds / 60)
 
-        return {
+        // Add summary row
+        const summaryRow = {
           'User Name': userProfile?.full_name || 'N/A',
           'Email': userProfile?.email || 'N/A',
           'Specialty': userProfile?.specialty || 'N/A',
@@ -279,11 +272,64 @@ export default function AdminDashboard() {
           'Test Title': testSession?.title || 'N/A',
           'Status': assignment.status,
           'Completed Cases': totalCases,
-          'Correct Answers': correctAnswers,
-          'Accuracy %': accuracy,
           'Total Time (min)': totalTimeMinutes,
           'Assigned At': new Date(assignment.assigned_at).toLocaleString('en-US', { timeZone: 'America/New_York' }),
-          'Completed At': assignment.completed_at ? new Date(assignment.completed_at).toLocaleString('en-US', { timeZone: 'America/New_York' }) : 'N/A'
+          'Completed At': assignment.completed_at ? new Date(assignment.completed_at).toLocaleString('en-US', { timeZone: 'America/New_York' }) : 'N/A',
+          'Case Number': 'SUMMARY',
+          'Case Title': 'Overall Performance',
+          'Question': 'N/A',
+          'Selected Answer': 'N/A',
+          'Time Spent (sec)': 'N/A',
+          'Time Spent (min)': 'N/A'
+        }
+        csvData.push(summaryRow)
+
+        // Add individual case responses
+        userResponses.forEach((response: { selected_answer: string; time_spent_seconds: number; cases?: { case_number: number; title: string; question: string } }) => {
+          const caseData = response.cases
+          const timeMinutes = Math.round((response.time_spent_seconds || 0) / 60)
+          
+          const caseRow = {
+            'User Name': userProfile?.full_name || 'N/A',
+            'Email': userProfile?.email || 'N/A',
+            'Specialty': userProfile?.specialty || 'N/A',
+            'Institution': userProfile?.institution || 'N/A',
+            'Test Title': testSession?.title || 'N/A',
+            'Status': assignment.status,
+            'Completed Cases': totalCases,
+            'Total Time (min)': totalTimeMinutes,
+            'Assigned At': new Date(assignment.assigned_at).toLocaleString('en-US', { timeZone: 'America/New_York' }),
+            'Completed At': assignment.completed_at ? new Date(assignment.completed_at).toLocaleString('en-US', { timeZone: 'America/New_York' }) : 'N/A',
+            'Case Number': caseData?.case_number || 'N/A',
+            'Case Title': caseData?.title || 'N/A',
+            'Question': caseData?.question || 'N/A',
+            'Selected Answer': response.selected_answer || 'N/A',
+            'Time Spent (sec)': response.time_spent_seconds || 0,
+            'Time Spent (min)': timeMinutes
+          }
+          csvData.push(caseRow)
+        })
+
+        // Add separator row between users
+        if (assignment !== assignments[assignments.length - 1]) {
+          csvData.push({
+            'User Name': '',
+            'Email': '',
+            'Specialty': '',
+            'Institution': '',
+            'Test Title': '',
+            'Status': '',
+            'Completed Cases': '',
+            'Total Time (min)': '',
+            'Assigned At': '',
+            'Completed At': '',
+            'Case Number': '---',
+            'Case Title': '---',
+            'Question': '---',
+            'Selected Answer': '---',
+            'Time Spent (sec)': '---',
+            'Time Spent (min)': '---'
+          })
         }
       })
 
@@ -291,7 +337,7 @@ export default function AdminDashboard() {
       const headers = Object.keys(csvData[0] || {})
       const csvContent = [
         headers.join(','),
-        ...csvData.map((row: Record<string, string | number>) => headers.map((header: string) => `"${row[header]}"`).join(','))
+        ...csvData.map((row: Record<string, string | number>) => headers.map((header: string) => `"${row[header] || ''}"`).join(','))
       ].join('\n')
 
       // Download CSV
@@ -300,7 +346,7 @@ export default function AdminDashboard() {
       const a = document.createElement('a')
       a.href = url
       const testTitle = testSession?.title?.replace(/[^a-zA-Z0-9]/g, '_') || 'test'
-      a.download = `test-results-${testTitle}-${new Date().toISOString().split('T')[0]}.csv`
+      a.download = `detailed-test-results-${testTitle}-${new Date().toISOString().split('T')[0]}.csv`
       a.click()
       window.URL.revokeObjectURL(url)
 

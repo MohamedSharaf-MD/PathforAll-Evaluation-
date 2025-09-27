@@ -76,8 +76,7 @@ export default function TestCompletionPage() {
           time_spent_seconds,
           selected_answer,
           cases!inner(
-            test_session_id,
-            correct_answer
+            test_session_id
           )
         `)
         .eq('user_id', user.id)
@@ -89,11 +88,8 @@ export default function TestCompletionPage() {
       const totalTimeMinutes = Math.round(totalTimeSeconds / 60)
       const averageTimePerCase = Math.round(totalTimeSeconds / responses.length)
       
-      // Calculate accuracy
-      const correctAnswers = responses.filter((r: { selected_answer: string; cases: { correct_answer: string }[] }) => 
-        r.cases.some(case_ => r.selected_answer === case_.correct_answer)
-      ).length
-      const accuracy = responses.length > 0 ? Math.round((correctAnswers / responses.length) * 100) : 0
+      // No accuracy calculation needed - just completion stats
+      const accuracy = 0 // Set to 0 since we're not tracking correct answers
 
       setStats({
         totalCases: responses.length,

@@ -123,7 +123,9 @@ export default function PathologistDashboard() {
       const { data: completedCases, error: casesError } = await supabase
         .from('case_responses')
         .select(`
-          cases!inner(test_session_id)
+          cases!inner(
+            test_session_id
+          )
         `)
         .eq('user_id', userId)
         .in('cases.test_session_id', testSessionIds)
@@ -132,15 +134,16 @@ export default function PathologistDashboard() {
 
       // Create completed cases map
       const completedMap = new Map()
-      completedCases?.forEach((response: { cases: { test_session_id: string }[] }) => {
-        response.cases.forEach(case_ => {
-          const testId = case_.test_session_id
+      if (completedCases) {
+        for (const response of completedCases) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const testId = (response as any).cases.test_session_id
           if (testId) {
             const count = completedMap.get(testId) || 0
             completedMap.set(testId, count + 1)
           }
-        })
-      })
+        }
+      }
 
       // Transform assignments data
       const transformedTests: AssignedTest[] = assignments?.map(assignment => {

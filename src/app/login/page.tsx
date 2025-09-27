@@ -3,17 +3,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
-import Link from 'next/link'
 import { UserPlus, LogIn } from 'lucide-react'
-
-interface NewUser {
-  email: string
-  password: string
-  full_name: string
-  specialty: string
-  institution: string
-  role: 'pathologist' | 'admin'
-}
 
 function LoginForm() {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -29,11 +19,17 @@ function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  // Check if user came from "Get Started" button
+  // Check if user came from "Get Started" button or email verification
   useEffect(() => {
     const mode = searchParams.get('mode')
+    const verified = searchParams.get('verified')
+    
     if (mode === 'signup') {
       setIsSignUp(true)
+    }
+    
+    if (verified === 'true') {
+      setSuccess('Email verified successfully! You can now sign in.')
     }
   }, [searchParams])
 
@@ -57,7 +53,7 @@ function LoginForm() {
       if (data.user) {
         router.push('/dashboard')
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setLoading(false)
@@ -71,10 +67,13 @@ function LoginForm() {
     setSuccess('')
 
     try {
-      // Create auth user
+      // Create auth user with redirect URL
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/login?verified=true`
+        }
       })
 
       if (authError) {
@@ -117,7 +116,7 @@ function LoginForm() {
           setSuccess('')
         }, 3000)
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setLoading(false)
