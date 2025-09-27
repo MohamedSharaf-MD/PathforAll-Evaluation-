@@ -69,7 +69,7 @@ export default function WSIViewer({
             tileOverlap: 1,
             minLevel: 0,
             maxLevel: maxLevel,
-            getTileUrl: function(level, x, y) {
+             getTileUrl: function(level: number, x: number, y: number) {
               return `https://dpyczcjhun2r2.cloudfront.net/${slidePath}/slide_files/${level}/${x}_${y}.jpg`
             }
           }

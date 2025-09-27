@@ -90,7 +90,9 @@ export default function TestCompletionPage() {
       const averageTimePerCase = Math.round(totalTimeSeconds / responses.length)
       
       // Calculate accuracy
-      const correctAnswers = responses.filter(r => r.selected_answer === r.cases?.correct_answer).length
+      const correctAnswers = responses.filter((r: { selected_answer: string; cases: { correct_answer: string }[] }) => 
+        r.cases.some(case_ => r.selected_answer === case_.correct_answer)
+      ).length
       const accuracy = responses.length > 0 ? Math.round((correctAnswers / responses.length) * 100) : 0
 
       setStats({

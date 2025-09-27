@@ -37,7 +37,7 @@ export default function TestInterface() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [showInstructions, setShowInstructions] = useState(true)
-  const intervalRef = useRef<NodeJS.Timeout>()
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     loadTestSession()

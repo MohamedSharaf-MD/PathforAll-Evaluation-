@@ -21,7 +21,7 @@ interface AssignedTest {
   test_session_id: string
   title: string
   description: string
-  status: 'pending' | 'in_progress' | 'completed'
+  status: 'pending' | 'assigned' | 'in_progress' | 'completed'
   assigned_at: string
   completed_at?: string
   case_count: number
@@ -67,7 +67,7 @@ export default function PathologistDashboard() {
         return
       }
       
-      setUser(user)
+      setUser({ id: user.id, email: user.email || '' })
       
       // Load user profile
       const { data: profile, error: profileError } = await supabase
@@ -132,12 +132,14 @@ export default function PathologistDashboard() {
 
       // Create completed cases map
       const completedMap = new Map()
-      completedCases?.forEach(response => {
-        const testId = response.cases?.test_session_id
-        if (testId) {
-          const count = completedMap.get(testId) || 0
-          completedMap.set(testId, count + 1)
-        }
+      completedCases?.forEach((response: { cases: { test_session_id: string }[] }) => {
+        response.cases.forEach(case_ => {
+          const testId = case_.test_session_id
+          if (testId) {
+            const count = completedMap.get(testId) || 0
+            completedMap.set(testId, count + 1)
+          }
+        })
       })
 
       // Transform assignments data
