@@ -199,7 +199,7 @@ export default function AdminDashboard() {
       }
 
       // Get user profiles separately
-      const userIds = assignments.map(a => a.user_id)
+      const userIds = assignments.map((a: any) => a.user_id)
       const { data: userProfiles, error: profilesError } = await supabase
         .from('user_profiles')
         .select('*')
@@ -223,7 +223,7 @@ export default function AdminDashboard() {
       }
 
       // Get case responses for each user (not assignment)
-      const responseUserIds = assignments.map(a => a.user_id)
+      const responseUserIds = assignments.map((a: any) => a.user_id)
       
       const { data: responses, error: responsesError } = await supabase
         .from('case_responses')
@@ -247,13 +247,13 @@ export default function AdminDashboard() {
 
       // Create user profiles map
       const userProfilesMap = new Map()
-      userProfiles?.forEach(profile => {
+      userProfiles?.forEach((profile: any) => {
         userProfilesMap.set(profile.id, profile)
       })
 
       // Group responses by user (not assignment)
       const responsesByUser = new Map()
-      responses?.forEach(response => {
+      responses?.forEach((response: any) => {
         const userId = response.user_id
         if (!responsesByUser.has(userId)) {
           responsesByUser.set(userId, [])
@@ -262,13 +262,13 @@ export default function AdminDashboard() {
       })
 
       // Create CSV data
-      const csvData = assignments.map(assignment => {
+      const csvData = assignments.map((assignment: any) => {
         const userProfile = userProfilesMap.get(assignment.user_id)
         const userResponses = responsesByUser.get(assignment.user_id) || []
-        const correctAnswers = userResponses.filter(r => r.selected_answer === r.cases?.correct_answer).length
+        const correctAnswers = userResponses.filter((r: any) => r.selected_answer === r.cases?.correct_answer).length
         const totalCases = userResponses.length
         const accuracy = totalCases > 0 ? Math.round((correctAnswers / totalCases) * 100) : 0
-        const totalTimeSeconds = userResponses.reduce((sum, r) => sum + (r.time_spent_seconds || 0), 0)
+        const totalTimeSeconds = userResponses.reduce((sum: number, r: any) => sum + (r.time_spent_seconds || 0), 0)
         const totalTimeMinutes = Math.round(totalTimeSeconds / 60)
 
         return {
@@ -291,7 +291,7 @@ export default function AdminDashboard() {
       const headers = Object.keys(csvData[0] || {})
       const csvContent = [
         headers.join(','),
-        ...csvData.map(row => headers.map(header => `"${row[header]}"`).join(','))
+        ...csvData.map((row: any) => headers.map((header: string) => `"${row[header]}"`).join(','))
       ].join('\n')
 
       // Download CSV
