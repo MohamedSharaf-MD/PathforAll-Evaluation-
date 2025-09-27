@@ -50,7 +50,7 @@ export default function LoginPage() {
       })
 
       if (error) {
-        setError(error.message)
+        setError(error instanceof Error ? error.message : 'An error occurred')
         return
       }
 

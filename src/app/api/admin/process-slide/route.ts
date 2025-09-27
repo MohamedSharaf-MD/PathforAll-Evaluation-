@@ -152,7 +152,7 @@ async function convertToTiles(inputPath: string, outputDir: string, caseId: stri
     }
 
   } catch (error) {
-    throw new Error(`Tile conversion failed: ${error.message}`)
+    throw new Error(`Tile conversion failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
@@ -215,7 +215,7 @@ async function uploadTilesToS3(outputDir: string, caseId: string): Promise<strin
     return slidePath
 
   } catch (error) {
-    throw new Error(`S3 upload failed: ${error.message}`)
+    throw new Error(`S3 upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
