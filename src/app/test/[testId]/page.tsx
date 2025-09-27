@@ -73,13 +73,13 @@ export default function TestInterface() {
       // Transform the data to match our interface
       const transformedSession: TestSession = {
         ...session,
-        cases: session.cases.map((case_: any) => ({
+        cases: session.cases.map((case_: { slide_url: string; case_order: number; [key: string]: unknown }) => ({
           ...case_,
           slide_path: case_.slide_url || '', // Use slide_url directly (it already contains the full path)
           slide_width: 119040, // Default values - you'll want to store these in DB
           slide_height: 25344,
           max_level: 9
-        })).sort((a: any, b: any) => a.case_order - b.case_order)
+        })).sort((a: { case_order: number }, b: { case_order: number }) => a.case_order - b.case_order)
       }
 
       setTestSession(transformedSession)

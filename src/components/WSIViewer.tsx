@@ -4,7 +4,35 @@ import { useEffect, useRef } from 'react'
 
 declare global {
   interface Window {
-    OpenSeadragon: any;
+    OpenSeadragon: {
+      (options: {
+        element: HTMLElement;
+        tileSources: Array<{
+          height: number;
+          width: number;
+          tileSize: number;
+          tileOverlap: number;
+          minLevel: number;
+          maxLevel: number;
+          getTileUrl: (level: number, x: number, y: number) => string;
+        }>;
+        showNavigator: boolean;
+        showRotationControl: boolean;
+        showHomeControl: boolean;
+        showFullPageControl: boolean;
+        showZoomControl: boolean;
+        mouseNavEnabled: boolean;
+        animationTime: number;
+        timeout: number;
+        controlsFadeDelay: number;
+        controlsFadeLength: number;
+        prefixUrl: string;
+        showSequenceControl: boolean;
+        showReferenceStrip: boolean;
+      }): {
+        destroy: () => void;
+      };
+    };
   }
 }
 
@@ -26,7 +54,7 @@ export default function WSIViewer({
   height = '600px' 
 }: WSIViewerProps) {
   const viewerRef = useRef<HTMLDivElement>(null)
-  const osdViewer = useRef<any>(null)
+  const osdViewer = useRef<{ destroy: () => void } | null>(null)
 
   useEffect(() => {
     const script = document.createElement('script')

@@ -48,7 +48,7 @@ interface DashboardStats {
 
 export default function PathologistDashboard() {
   const router = useRouter()
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<{ id: string; email: string } | null>(null)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
   const [assignedTests, setAssignedTests] = useState<AssignedTest[]>([])
   const [stats, setStats] = useState<DashboardStats | null>(null)
@@ -278,7 +278,7 @@ export default function PathologistDashboard() {
             ].map(tab => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => setActiveTab(tab.id as 'overview' | 'tests' | 'history')}
                 className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
                   activeTab === tab.id
                     ? 'border-indigo-500 text-indigo-600'
