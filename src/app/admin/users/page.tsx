@@ -200,7 +200,7 @@ export default function UserManagementPage() {
       await loadUsers()
     } catch (error) {
       console.error('Error adding user:', error)
-      if (error.message.includes('already registered')) {
+      if (error instanceof Error && error.message.includes('already registered')) {
         setErrors({ email: 'User with this email already exists' })
       } else {
         setErrors({ general: 'Failed to create user. Please try again.' })
