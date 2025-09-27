@@ -111,7 +111,7 @@ async function getSlideInfo(inputPath: string): Promise<{
     
     return { width, height, maxLevel }
   } catch (error) {
-    throw new Error(`Failed to get slide info: ${error.message}`)
+    throw new Error(`Failed to get slide info: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
