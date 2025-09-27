@@ -70,7 +70,16 @@ export default function WSIViewer({
             minLevel: 0,
             maxLevel: maxLevel,
              getTileUrl: function(level: number, x: number, y: number) {
-              return `https://dpyczcjhun2r2.cloudfront.net/${slidePath}/slide_files/${level}/${x}_${y}.jpg`
+              // Check if slidePath is already a full URL
+              if (slidePath.startsWith('http')) {
+                // Extract the case name from the full URL
+                const urlParts = slidePath.split('/')
+                const caseName = urlParts[urlParts.length - 2] // Get the case name before slide.dzi
+                return `https://dpyczcjhun2r2.cloudfront.net/${caseName}/slide_files/${level}/${x}_${y}.jpg`
+              } else {
+                // Original behavior for relative paths
+                return `https://dpyczcjhun2r2.cloudfront.net/${slidePath}/slide_files/${level}/${x}_${y}.jpg`
+              }
             }
           }
 
