@@ -358,7 +358,7 @@ export default function TestResultsPage() {
         return b.accuracy_percentage - a.accuracy_percentage
       case 'time':
         return a.total_time_minutes - b.total_time_minutes
-      case 'completed':
+      case 'status':
         return b.completed_cases - a.completed_cases
       default:
         return a.user_name.localeCompare(b.user_name)
