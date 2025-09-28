@@ -72,9 +72,17 @@ export default function WSIViewer({
              getTileUrl: function(level: number, x: number, y: number) {
               // Check if slidePath is already a full URL
               if (slidePath.startsWith('http')) {
-                // Extract the case name from the full URL
+                // Extract the path from the full URL
                 const urlParts = slidePath.split('/')
-                const caseName = urlParts[urlParts.length - 2] // Get the case name before slide.dzi
+                // Find the CloudFront domain and get everything after it
+                const cloudfrontIndex = urlParts.findIndex(part => part.includes('cloudfront.net'))
+                if (cloudfrontIndex !== -1 && cloudfrontIndex < urlParts.length - 1) {
+                  // Get the path after CloudFront domain (e.g., "slides/ME-052" or "case_0NTDJG")
+                  const pathAfterCloudfront = urlParts.slice(cloudfrontIndex + 1, -1).join('/')
+                  return `https://dpyczcjhun2r2.cloudfront.net/${pathAfterCloudfront}/slide_files/${level}/${x}_${y}.jpg`
+                }
+                // Fallback: extract case name from the end
+                const caseName = urlParts[urlParts.length - 2]
                 return `https://dpyczcjhun2r2.cloudfront.net/${caseName}/slide_files/${level}/${x}_${y}.jpg`
               } else {
                 // Original behavior for relative paths
