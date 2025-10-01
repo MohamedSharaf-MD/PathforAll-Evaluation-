@@ -37,6 +37,8 @@ export default function TestInterface() {
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [showInstructions, setShowInstructions] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [savingProgress, setSavingProgress] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
@@ -48,9 +50,24 @@ export default function TestInterface() {
     }
   }, [])
 
+  // Add beforeunload warning for unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      const hasUnsavedAnswers = Object.keys(responses).length > 0
+      if (hasUnsavedAnswers && !submitting) {
+        e.preventDefault()
+        e.returnValue = 'You have unsaved answers. Are you sure you want to leave?'
+        return 'You have unsaved answers. Are you sure you want to leave?'
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [responses, submitting])
+
   const loadTestSession = async () => {
     try {
-      // Load test session with cases
+      // Load test session with cases and slide library data
       const { data: session, error } = await supabase
         .from('test_sessions')
         .select(`
@@ -70,23 +87,96 @@ export default function TestInterface() {
 
       if (error) throw error
 
+      // Load slide library data for each case to get proper dimensions
+      const slideUrls = session.cases.map((case_: { slide_url: string }) => case_.slide_url).filter(Boolean)
+      const { data: slideLibrary, error: slideError } = await supabase
+        .from('slide_library')
+        .select('slide_path, slide_width, slide_height, max_level')
+        .in('slide_path', slideUrls)
+
+      if (slideError) {
+        console.warn('Error loading slide library:', slideError)
+      }
+
+      // Create a map of slide paths to their dimensions
+      const slideDimensions = new Map()
+      slideLibrary?.forEach(slide => {
+        slideDimensions.set(slide.slide_path, {
+          slide_width: slide.slide_width,
+          slide_height: slide.slide_height,
+          max_level: slide.max_level
+        })
+      })
+
       // Transform the data to match our interface
       const transformedSession: TestSession = {
         ...session,
-        cases: session.cases.map((case_: { slide_url: string; case_order: number; [key: string]: unknown }) => ({
-          ...case_,
-          slide_path: case_.slide_url || '', // Use slide_url directly (it already contains the full path)
-          slide_width: 119040, // Default values - you'll want to store these in DB
-          slide_height: 25344,
-          max_level: 9
-        })).sort((a: { case_order: number }, b: { case_order: number }) => a.case_order - b.case_order)
+        cases: session.cases.map((case_: { slide_url: string; case_order: number; [key: string]: unknown }) => {
+          const slidePath = case_.slide_url || ''
+          const dimensions = slideDimensions.get(slidePath) || {
+            slide_width: 119040,
+            slide_height: 25344,
+            max_level: 9
+          }
+          
+          return {
+            ...case_,
+            slide_path: slidePath,
+            slide_width: dimensions.slide_width,
+            slide_height: dimensions.slide_height,
+            max_level: dimensions.max_level
+          }
+        }).sort((a: { case_order: number }, b: { case_order: number }) => a.case_order - b.case_order)
       }
 
       setTestSession(transformedSession)
       setLoading(false)
+      
+      // Load existing responses after test session is set
+      await loadExistingResponses(transformedSession)
     } catch (error) {
       console.error('Error loading test session:', error)
       setLoading(false)
+    }
+  }
+
+  const loadExistingResponses = async (session: TestSession) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data: responses, error } = await supabase
+        .from('case_responses')
+        .select('case_id, selected_answer')
+        .eq('user_id', user.id)
+        .in('case_id', session.cases.map(c => c.id))
+
+      if (error) {
+        console.warn('Error loading existing responses:', error)
+        return
+      }
+
+      // Convert responses to the format expected by the component
+      const responsesMap: Record<string, string> = {}
+      responses?.forEach(response => {
+        responsesMap[response.case_id] = response.selected_answer
+      })
+
+      setResponses(responsesMap)
+
+      // Load saved progress
+      const { data: progress, error: progressError } = await supabase
+        .from('test_progress')
+        .select('current_case_index')
+        .eq('user_id', user.id)
+        .eq('test_session_id', session.id)
+        .single()
+
+      if (!progressError && progress) {
+        setCurrentCaseIndex(progress.current_case_index)
+      }
+    } catch (error) {
+      console.warn('Error loading existing responses:', error)
     }
   }
 
@@ -103,6 +193,64 @@ export default function TestInterface() {
       ...prev,
       [currentCase.id]: answer
     }))
+
+    // Auto-save the response
+    autoSaveResponse(currentCase.id, answer)
+  }
+
+  const saveProgress = async () => {
+    try {
+      setSavingProgress(true)
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user || !testSession) return
+
+      // Save current progress
+      await supabase
+        .from('test_progress')
+        .upsert({
+          user_id: user.id,
+          test_session_id: testSession.id,
+          current_case_index: currentCaseIndex,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id,test_session_id'
+        })
+
+      // Redirect to dashboard
+      router.push('/dashboard')
+    } catch (error) {
+      console.error('Error saving progress:', error)
+      alert('Failed to save progress. Please try again.')
+    } finally {
+      setSavingProgress(false)
+    }
+  }
+
+  const autoSaveResponse = async (caseId: string, answer: string) => {
+    try {
+      setSaving(true)
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      // Calculate time spent on current case
+      const timeSpent = Math.floor((Date.now() - caseStartTime) / 1000)
+
+      await supabase
+        .from('case_responses')
+        .upsert({
+          user_id: user.id,
+          case_id: caseId,
+          selected_answer: answer,
+          time_spent_seconds: timeSpent,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'user_id,case_id'
+        })
+    } catch (error) {
+      console.error('Error auto-saving response:', error)
+    } finally {
+      setSaving(false)
+    }
   }
 
   const nextCase = async () => {
@@ -302,11 +450,17 @@ export default function TestInterface() {
         <div className="grid lg:grid-cols-3 gap-6 h-[calc(100vh-180px)]">
           {/* WSI Viewer */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-full">
-              <div className="p-4 border-b border-gray-200">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-full flex flex-col">
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center">
                 <h2 className="text-lg font-medium text-gray-900">{currentCase.title}</h2>
+                {saving && (
+                  <div className="flex items-center text-sm text-gray-500">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600 mr-2"></div>
+                    Saving...
+                  </div>
+                )}
               </div>
-              <div className="p-4 h-[calc(100%-80px)]">
+              <div className="flex-1 p-4">
                 <WSIViewer
                   slidePath={currentCase.slide_path}
                   slideWidth={currentCase.slide_width}
@@ -360,6 +514,20 @@ export default function TestInterface() {
 
               {/* Navigation */}
               <div className="p-6 border-t border-gray-200">
+                <div className="flex justify-between items-center mb-4">
+                  <button
+                    onClick={saveProgress}
+                    disabled={savingProgress}
+                    className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {savingProgress ? 'Saving...' : 'Save Progress'}
+                  </button>
+                  
+                  <span className="text-sm text-gray-500">
+                    {currentCaseIndex + 1} of {testSession.cases.length}
+                  </span>
+                </div>
+                
                 <div className="flex justify-between">
                   <button
                     onClick={previousCase}

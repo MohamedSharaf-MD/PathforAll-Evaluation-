@@ -28,7 +28,7 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
 
 // Configuration
 const BUCKET_NAME = 'wsi-path';
-const SOURCE_DIR = '/Users/sharam03/Desktop/MF Project converted_1';
+const SOURCE_DIR = '/home/chrisparklab/MF tiled';
 const CLOUDFRONT_DOMAIN = 'dpyczcjhun2r2.cloudfront.net';
 
 async function registerSlidesInDatabase() {

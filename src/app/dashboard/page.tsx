@@ -101,7 +101,7 @@ export default function PathologistDashboard() {
 
   const loadDashboardData = async (userId: string) => {
     try {
-      // Load assigned tests with progress
+      // Load assigned tests
       const { data: assignments, error: assignmentsError } = await supabase
         .from('user_assignments')
         .select(`
@@ -109,8 +109,7 @@ export default function PathologistDashboard() {
           test_sessions!inner(
             id,
             title,
-            description,
-            cases(count)
+            description
           )
         `)
         .eq('user_id', userId)
@@ -118,8 +117,26 @@ export default function PathologistDashboard() {
 
       if (assignmentsError) throw assignmentsError
 
-      // Load completed cases count for each test
+      // Get test session IDs
       const testSessionIds = assignments?.map(a => a.test_session_id) || []
+
+      // Load case counts for each test session
+      const { data: caseCounts, error: caseCountError } = await supabase
+        .from('cases')
+        .select('test_session_id')
+        .in('test_session_id', testSessionIds)
+
+      if (caseCountError) throw caseCountError
+
+      // Create case count map
+      const caseCountMap = new Map()
+      caseCounts?.forEach(case_ => {
+        const testId = case_.test_session_id
+        const count = caseCountMap.get(testId) || 0
+        caseCountMap.set(testId, count + 1)
+      })
+
+      // Load completed cases count for each test
       const { data: completedCases, error: casesError } = await supabase
         .from('case_responses')
         .select(`
@@ -148,7 +165,7 @@ export default function PathologistDashboard() {
       // Transform assignments data
       const transformedTests: AssignedTest[] = assignments?.map(assignment => {
         const completedCasesCount = completedMap.get(assignment.test_session_id) || 0
-        const totalCases = assignment.test_sessions?.cases?.length || 0
+        const totalCases = caseCountMap.get(assignment.test_session_id) || 0
         const progressPercentage = totalCases > 0 ? Math.round((completedCasesCount / totalCases) * 100) : 0
         
         return {
@@ -344,8 +361,8 @@ export default function PathologistDashboard() {
                     <BarChart3 className="h-8 w-8 text-purple-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">Cases Completed</p>
-                    <p className="text-2xl font-semibold text-gray-900">{stats.completedCases}/{stats.totalCases}</p>
+                    <p className="text-sm font-medium text-gray-500">Total Cases</p>
+                    <p className="text-2xl font-semibold text-gray-900">{stats.totalCases}</p>
                   </div>
                 </div>
               </div>
@@ -370,7 +387,7 @@ export default function PathologistDashboard() {
                           {getStatusIcon(test.status)}
                           <div>
                             <h4 className="font-medium text-gray-900">{test.title}</h4>
-                            <p className="text-sm text-gray-500">{test.case_count} cases • {test.progress_percentage}% complete</p>
+                            <p className="text-sm text-gray-500">{test.case_count} cases</p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -441,14 +458,10 @@ export default function PathologistDashboard() {
                           </div>
                           <p className="text-gray-600 mb-4">{test.description}</p>
                           
-                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                             <div>
                               <p className="text-gray-500">Cases</p>
-                              <p className="font-medium">{test.completed_cases}/{test.case_count}</p>
-                            </div>
-                            <div>
-                              <p className="text-gray-500">Progress</p>
-                              <p className="font-medium">{test.progress_percentage}%</p>
+                              <p className="font-medium">{test.case_count}</p>
                             </div>
                             <div>
                               <p className="text-gray-500">Assigned</p>
@@ -460,20 +473,6 @@ export default function PathologistDashboard() {
                                 <p className="font-medium">{formatDate(test.completed_at)}</p>
                               </div>
                             )}
-                          </div>
-
-                          {/* Progress Bar */}
-                          <div className="mt-4">
-                            <div className="flex justify-between text-sm text-gray-600 mb-1">
-                              <span>Progress</span>
-                              <span>{test.progress_percentage}%</span>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div 
-                                className="bg-indigo-600 h-2 rounded-full transition-all duration-300"
-                                style={{ width: `${test.progress_percentage}%` }}
-                              ></div>
-                            </div>
                           </div>
                         </div>
                         

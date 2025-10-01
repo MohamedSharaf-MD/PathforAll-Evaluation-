@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-SLIDES_DIR="/Users/sharam03/Desktop/MF and Spng derm cases for Christopher"
-OUT_DIR="/Users/sharam03/Desktop/MF Project converted"
+SLIDES_DIR="/home/chrisparklab/MF and Spng derm cases for Christopher"
+OUT_DIR="/home/chrisparklab/MF tiled"
 
 shopt -s nullglob
 for slide in "$SLIDES_DIR"/*.ndpi; do

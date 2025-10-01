@@ -12,10 +12,10 @@ export default function ViewerPage() {
           </h1>
           
           <WSIViewer 
-            slidePath="slides/ME-052"
-            slideWidth={119040}
-            slideHeight={25344}
-            maxLevel={9}
+            slidePath="case_0NTDJG"
+            slideWidth={153600}
+            slideHeight={52992}
+            maxLevel={10}
             height="70vh"
           />
           

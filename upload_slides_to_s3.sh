@@ -6,10 +6,10 @@
 set -e
 
 # Configuration
-SOURCE_DIR="/Users/sharam03/Desktop/MF Project converted_1"
+SOURCE_DIR="/home/chrisparklab/MF tiled"
 BUCKET_NAME="wsi-path"
 REGION="us-east-2"
-PROJECT_ROOT="/Users/sharam03/pathforall"
+PROJECT_ROOT="/home/chrisparklab/PathforAll-Evaluation-"
 CLOUDFRONT_DOMAIN="dpyczcjhun2r2.cloudfront.net"
 
 echo "🚀 Starting DZ file upload to S3..."
