@@ -226,6 +226,8 @@ export default function AdminDashboard() {
             id,
             case_number,
             title,
+            question,
+            slide_url,
             test_session_id
           )
         `)
@@ -236,6 +238,23 @@ export default function AdminDashboard() {
         console.error('Responses error:', responsesError)
         throw responsesError
       }
+
+      // Get slide names from slide_library
+      const slideUrls = responses?.map((r: { cases?: { slide_url: string } }) => r.cases?.slide_url).filter(Boolean) || []
+      const { data: slideLibrary, error: slideError } = await supabase
+        .from('slide_library')
+        .select('slide_path, slide_name')
+        .in('slide_path', slideUrls)
+
+      if (slideError) {
+        console.warn('Slide library error:', slideError)
+      }
+
+      // Create slide names map
+      const slideNamesMap = new Map()
+      slideLibrary?.forEach((slide: { slide_path: string; slide_name: string }) => {
+        slideNamesMap.set(slide.slide_path, slide.slide_name)
+      })
 
       // Create user profiles map
       const userProfilesMap = new Map()
@@ -277,6 +296,7 @@ export default function AdminDashboard() {
           'Completed At': assignment.completed_at ? new Date(assignment.completed_at).toLocaleString('en-US', { timeZone: 'America/New_York' }) : 'N/A',
           'Case Number': 'SUMMARY',
           'Case Title': 'Overall Performance',
+          'Slide Name': 'N/A',
           'Question': 'N/A',
           'Selected Answer': 'N/A',
           'Time Spent (sec)': 'N/A',
@@ -285,9 +305,10 @@ export default function AdminDashboard() {
         csvData.push(summaryRow)
 
         // Add individual case responses
-        userResponses.forEach((response: { selected_answer: string; time_spent_seconds: number; cases?: { case_number: number; title: string; question: string } }) => {
+        userResponses.forEach((response: { selected_answer: string; time_spent_seconds: number; cases?: { case_number: number; title: string; question: string; slide_url: string } }) => {
           const caseData = response.cases
           const timeMinutes = Math.round((response.time_spent_seconds || 0) / 60)
+          const slideName = caseData?.slide_url ? slideNamesMap.get(caseData.slide_url) || 'N/A' : 'N/A'
           
           const caseRow = {
             'User Name': userProfile?.full_name || 'N/A',
@@ -302,6 +323,7 @@ export default function AdminDashboard() {
             'Completed At': assignment.completed_at ? new Date(assignment.completed_at).toLocaleString('en-US', { timeZone: 'America/New_York' }) : 'N/A',
             'Case Number': caseData?.case_number || 'N/A',
             'Case Title': caseData?.title || 'N/A',
+            'Slide Name': slideName,
             'Question': caseData?.question || 'N/A',
             'Selected Answer': response.selected_answer || 'N/A',
             'Time Spent (sec)': response.time_spent_seconds || 0,
@@ -325,6 +347,7 @@ export default function AdminDashboard() {
             'Completed At': '',
             'Case Number': '---',
             'Case Title': '---',
+            'Slide Name': '---',
             'Question': '---',
             'Selected Answer': '---',
             'Time Spent (sec)': '---',
