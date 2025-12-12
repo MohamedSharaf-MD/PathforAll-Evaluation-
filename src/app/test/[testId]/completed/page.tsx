@@ -151,7 +151,7 @@ export default function TestCompletionPage() {
       <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
-          <p className="text-slate-300">Loading completion summary...</p>
+          <p className="text-slate-200">Loading completion summary...</p>
         </div>
       </div>
     )
@@ -167,7 +167,7 @@ export default function TestCompletionPage() {
             </svg>
           </div>
           <h2 className="text-xl font-semibold text-white mb-2">Error Loading Results</h2>
-          <p className="text-slate-300 mb-4">{error}</p>
+          <p className="text-slate-200 mb-4">{error}</p>
           <button
             onClick={() => router.push('/dashboard')}
             className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white px-6 py-2 rounded-lg shadow-lg shadow-teal-500/25 transition-colors"
@@ -188,7 +188,7 @@ export default function TestCompletionPage() {
             <CheckCircle2 className="h-10 w-10 text-green-400" />
           </div>
           <h1 className="text-4xl font-bold text-white mb-4">Test Completed Successfully!</h1>
-          <p className="text-xl text-slate-300">
+          <p className="text-xl text-slate-200">
             You have successfully completed <span className="font-semibold">{stats.testTitle}</span>
           </p>
         </div>
@@ -208,23 +208,23 @@ export default function TestCompletionPage() {
               <h3 className="text-lg font-semibold text-white mb-4">Participant Information</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <dt className="text-sm font-medium text-slate-300">Name</dt>
+                  <dt className="text-sm font-medium text-slate-200">Name</dt>
                   <dd className="text-lg text-white font-medium">{stats.userProfile.full_name}</dd>
                 </div>
                 {stats.userProfile.specialty && (
                   <div>
-                    <dt className="text-sm font-medium text-slate-300">Specialty</dt>
+                    <dt className="text-sm font-medium text-slate-200">Specialty</dt>
                     <dd className="text-lg text-white">{stats.userProfile.specialty}</dd>
                   </div>
                 )}
                 {stats.userProfile.institution && (
                   <div>
-                    <dt className="text-sm font-medium text-slate-300">Institution</dt>
+                    <dt className="text-sm font-medium text-slate-200">Institution</dt>
                     <dd className="text-lg text-white">{stats.userProfile.institution}</dd>
                   </div>
                 )}
                 <div>
-                  <dt className="text-sm font-medium text-slate-300">Test Session</dt>
+                  <dt className="text-sm font-medium text-slate-200">Test Session</dt>
                   <dd className="text-lg text-white">{stats.testTitle}</dd>
                 </div>
               </div>
@@ -273,7 +273,7 @@ export default function TestCompletionPage() {
               </div>
               <div>
                 <h4 className="font-medium text-white">Responses Recorded</h4>
-                <p className="text-slate-300">Your responses have been securely saved and timestamped.</p>
+                <p className="text-slate-200">Your responses have been securely saved and timestamped.</p>
               </div>
             </div>
 
@@ -285,7 +285,7 @@ export default function TestCompletionPage() {
               </div>
               <div>
                 <h4 className="font-medium text-white">Administrator Review</h4>
-                <p className="text-slate-300">Test administrators will review all responses and compile results.</p>
+                <p className="text-slate-200">Test administrators will review all responses and compile results.</p>
               </div>
             </div>
 
@@ -297,7 +297,7 @@ export default function TestCompletionPage() {
               </div>
               <div>
                 <h4 className="font-medium text-white">Results Available</h4>
-                <p className="text-slate-300">Detailed results and feedback will be provided when available.</p>
+                <p className="text-slate-200">Detailed results and feedback will be provided when available.</p>
               </div>
             </div>
           </div>
@@ -324,7 +324,7 @@ export default function TestCompletionPage() {
 
         {/* Footer Note */}
         <div className="text-center mt-12">
-          <p className="text-slate-300 text-sm">
+          <p className="text-slate-200 text-sm">
             Thank you for participating in this pathology evaluation session.
             <br />
             For questions or technical support, please contact your administrator.

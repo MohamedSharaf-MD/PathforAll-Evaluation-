@@ -265,7 +265,7 @@ export default function CreateTestPage() {
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => router.push('/admin')}
-                className="text-slate-300 hover:text-white transition-colors"
+                className="text-slate-200 hover:text-white transition-colors"
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
@@ -304,7 +304,7 @@ export default function CreateTestPage() {
                     ? 'border-teal-500 bg-teal-500 text-white shadow-lg shadow-teal-500/25'
                     : index < ['basic', 'cases', 'preview'].indexOf(currentStep)
                     ? 'border-teal-500 bg-teal-500 text-white'
-                    : 'border-slate-600 bg-slate-800 text-slate-300'
+                    : 'border-slate-600 bg-slate-800 text-slate-200'
                 }`}>
                   {index < ['basic', 'cases', 'preview'].indexOf(currentStep) ?
                     <CheckCircle className="h-5 w-5" /> :
@@ -312,7 +312,7 @@ export default function CreateTestPage() {
                   }
                 </div>
                 <span className={`ml-3 font-medium transition-colors ${
-                  currentStep === step.id ? 'text-teal-400' : index < ['basic', 'cases', 'preview'].indexOf(currentStep) ? 'text-teal-500' : 'text-slate-300'
+                  currentStep === step.id ? 'text-teal-400' : index < ['basic', 'cases', 'preview'].indexOf(currentStep) ? 'text-teal-500' : 'text-slate-200'
                 }`}>
                   {step.label}
                 </span>
@@ -336,14 +336,14 @@ export default function CreateTestPage() {
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Test Title *
                   </label>
                   <input
                     type="text"
                     value={testSession.title}
                     onChange={(e) => setTestSession(prev => ({ ...prev, title: e.target.value }))}
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
                       errors.title ? 'border-red-500' : 'border-slate-700'
                     }`}
                     placeholder="e.g., Dermatopathology Assessment - Q1 2025"
@@ -354,14 +354,14 @@ export default function CreateTestPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Description *
                   </label>
                   <textarea
                     value={testSession.description}
                     onChange={(e) => setTestSession(prev => ({ ...prev, description: e.target.value }))}
                     rows={3}
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
                       errors.description ? 'border-red-500' : 'border-slate-700'
                     }`}
                     placeholder="Brief description of the test session purpose and content..."
@@ -372,14 +372,14 @@ export default function CreateTestPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Instructions for Pathologists *
                   </label>
                   <textarea
                     value={testSession.instructions}
                     onChange={(e) => setTestSession(prev => ({ ...prev, instructions: e.target.value }))}
                     rows={6}
-                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                    className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
                       errors.instructions ? 'border-red-500' : 'border-slate-700'
                     }`}
                     placeholder="Detailed instructions for pathologists taking this test..."
@@ -437,9 +437,9 @@ export default function CreateTestPage() {
 
                   {testSession.cases.length === 0 ? (
                     <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-12 text-center">
-                      <FileImage className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+                      <FileImage className="h-12 w-12 text-slate-200 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-white mb-2">No cases added yet</h3>
-                      <p className="text-slate-300 mb-6">Start by adding your first test case with a slide image and question.</p>
+                      <p className="text-slate-200 mb-6">Start by adding your first test case with a slide image and question.</p>
                       <button
                         onClick={addCase}
                         className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white px-6 py-3 rounded-lg font-medium shadow-lg shadow-teal-500/25 transition-all"
@@ -456,8 +456,8 @@ export default function CreateTestPage() {
                               <h3 className="text-lg font-medium text-white mb-2">
                                 Case {index + 1}: {testCase.title}
                               </h3>
-                              <p className="text-slate-300 mb-4">{testCase.question}</p>
-                              <div className="text-sm text-slate-300">
+                              <p className="text-slate-200 mb-4">{testCase.question}</p>
+                              <div className="text-sm text-slate-200">
                                 <span>{testCase.choices.filter(c => c.trim()).length} answer choices</span>
                                 {testCase.slidePath && (
                                   <span className="ml-4">• Slide uploaded</span>
@@ -525,14 +525,14 @@ export default function CreateTestPage() {
 
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-slate-200 mb-2">
                         Case Title *
                       </label>
                       <input
                         type="text"
                         value={editingCase.title}
                         onChange={(e) => setEditingCase(prev => prev ? { ...prev, title: e.target.value } : null)}
-                        className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                        className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
                           errors.caseTitle ? 'border-red-500' : 'border-slate-700'
                         }`}
                         placeholder="e.g., Melanocytic Lesion - Case A"
@@ -543,14 +543,14 @@ export default function CreateTestPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-slate-200 mb-2">
                         Question *
                       </label>
                       <textarea
                         value={editingCase.question}
                         onChange={(e) => setEditingCase(prev => prev ? { ...prev, question: e.target.value } : null)}
                         rows={4}
-                        className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                        className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
                           errors.caseQuestion ? 'border-red-500' : 'border-slate-700'
                         }`}
                         placeholder="What is your diagnosis based on the histological features shown?"
@@ -561,13 +561,13 @@ export default function CreateTestPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-slate-200 mb-2">
                         Answer Choices *
                       </label>
                       <div className="space-y-3">
                         {editingCase.choices.map((choice, index) => (
                           <div key={index} className="flex items-center space-x-3">
-                            <span className="text-sm font-medium text-slate-300 w-6">
+                            <span className="text-sm font-medium text-slate-200 w-6">
                               {String.fromCharCode(65 + index)}.
                             </span>
                             <input
@@ -578,7 +578,7 @@ export default function CreateTestPage() {
                                 newChoices[index] = e.target.value
                                 setEditingCase(prev => prev ? { ...prev, choices: newChoices } : null)
                               }}
-                              className="flex-1 px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                              className="flex-1 px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                               placeholder={`Answer choice ${String.fromCharCode(65 + index)}`}
                             />
                           </div>
@@ -591,7 +591,7 @@ export default function CreateTestPage() {
 
 
                     <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">
+                      <label className="block text-sm font-medium text-slate-200 mb-2">
                         Select Slide *
                       </label>
                       <select
@@ -608,7 +608,7 @@ export default function CreateTestPage() {
                             })
                           }
                         }}
-                        className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
+                        className={`w-full px-4 py-3 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all ${
                           errors.slideFile ? 'border-red-500' : 'border-slate-700'
                         }`}
                       >
@@ -620,7 +620,7 @@ export default function CreateTestPage() {
                         ))}
                       </select>
                       {availableSlides.length === 0 && (
-                        <p className="mt-2 text-sm text-slate-300">No slides available. Upload slides to S3 first.</p>
+                        <p className="mt-2 text-sm text-slate-200">No slides available. Upload slides to S3 first.</p>
                       )}
                       {errors.slideFile && (
                         <p className="mt-1 text-sm text-red-400">{errors.slideFile}</p>
@@ -664,8 +664,8 @@ export default function CreateTestPage() {
                   ) : (
                     <div className="h-96 border-2 border-dashed border-slate-700 rounded-lg flex items-center justify-center bg-slate-900/30">
                       <div className="text-center">
-                        <FileImage className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                        <p className="text-slate-300">Select a slide to see preview</p>
+                        <FileImage className="h-12 w-12 text-slate-200 mx-auto mb-4" />
+                        <p className="text-slate-200">Select a slide to see preview</p>
                       </div>
                     </div>
                   )}
@@ -688,16 +688,16 @@ export default function CreateTestPage() {
                   <div className="bg-slate-900/50 rounded-lg p-6 border border-slate-700/50">
                     <dl className="grid grid-cols-1 gap-4">
                       <div>
-                        <dt className="text-sm font-medium text-slate-300">Title</dt>
+                        <dt className="text-sm font-medium text-slate-200">Title</dt>
                         <dd className="text-lg text-white mt-1">{testSession.title}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm font-medium text-slate-300">Description</dt>
-                        <dd className="text-slate-300 mt-1">{testSession.description}</dd>
+                        <dt className="text-sm font-medium text-slate-200">Description</dt>
+                        <dd className="text-slate-200 mt-1">{testSession.description}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm font-medium text-slate-300">Instructions</dt>
-                        <dd className="text-slate-300 whitespace-pre-line mt-1">{testSession.instructions}</dd>
+                        <dt className="text-sm font-medium text-slate-200">Instructions</dt>
+                        <dd className="text-slate-200 whitespace-pre-line mt-1">{testSession.instructions}</dd>
                       </div>
                     </dl>
                   </div>
@@ -716,14 +716,14 @@ export default function CreateTestPage() {
                             <h4 className="font-medium text-white">
                               Case {index + 1}: {testCase.title}
                             </h4>
-                            <p className="text-slate-300 mt-2">{testCase.question}</p>
+                            <p className="text-slate-200 mt-2">{testCase.question}</p>
                             <div className="mt-3">
-                              <span className="text-sm text-slate-300">
+                              <span className="text-sm text-slate-200">
                                 {testCase.choices.filter(c => c.trim()).length} choices
                               </span>
                             </div>
                           </div>
-                          <div className="text-sm text-slate-300">
+                          <div className="text-sm text-slate-200">
                             {testCase.slidePath ? (
                               <span className="text-teal-400 flex items-center">
                                 <CheckCircle className="h-4 w-4 mr-1" />
@@ -782,7 +782,7 @@ export default function CreateTestPage() {
                 <h2 className="text-2xl font-bold text-white">Create Cases from Template</h2>
                 <button
                   onClick={() => setShowTemplateModal(false)}
-                  className="text-slate-300 hover:text-white transition-colors"
+                  className="text-slate-200 hover:text-white transition-colors"
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -791,7 +791,7 @@ export default function CreateTestPage() {
               <div className="space-y-6">
                 {/* Template Selection */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Select Template Case *
                   </label>
                   <select
@@ -800,7 +800,7 @@ export default function CreateTestPage() {
                       const selectedCase = testSession.cases.find(c => c.id === e.target.value)
                       setTemplateCase(selectedCase || null)
                     }}
-                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
                   >
                     <option value="">Choose a template case...</option>
                     {testSession.cases.map(testCase => (
@@ -816,16 +816,16 @@ export default function CreateTestPage() {
                   <div className="bg-slate-900/50 border border-slate-700/50 rounded-lg p-4">
                     <h3 className="font-medium text-white mb-2">Template Preview</h3>
                     <div className="space-y-2 text-sm">
-                      <p className="text-slate-300"><strong className="text-slate-300">Title:</strong> {templateCase.title}</p>
-                      <p className="text-slate-300"><strong className="text-slate-300">Question:</strong> {templateCase.question}</p>
-                      <p className="text-slate-300"><strong className="text-slate-300">Choices:</strong> {templateCase.choices.filter(c => c.trim()).join(', ')}</p>
+                      <p className="text-slate-200"><strong className="text-slate-200">Title:</strong> {templateCase.title}</p>
+                      <p className="text-slate-200"><strong className="text-slate-200">Question:</strong> {templateCase.question}</p>
+                      <p className="text-slate-200"><strong className="text-slate-200">Choices:</strong> {templateCase.choices.filter(c => c.trim()).join(', ')}</p>
                     </div>
                   </div>
                 )}
 
                 {/* Slide Selection */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-200 mb-2">
                     Select Slides for New Cases *
                   </label>
                   <div className="max-h-60 overflow-y-auto bg-slate-900/50 border border-slate-700 rounded-lg p-4">
@@ -843,13 +843,13 @@ export default function CreateTestPage() {
                           }}
                           className="h-4 w-4 text-teal-500 focus:ring-teal-500 border-slate-600 rounded bg-slate-900"
                         />
-                        <span className="text-sm text-slate-300">
+                        <span className="text-sm text-slate-200">
                           {slide.slide_name} ({slide.slide_width}x{slide.slide_height})
                         </span>
                       </label>
                     ))}
                   </div>
-                  <p className="mt-2 text-sm text-slate-300">
+                  <p className="mt-2 text-sm text-slate-200">
                     {selectedSlidesForTemplate.length} slide(s) selected
                   </p>
                 </div>

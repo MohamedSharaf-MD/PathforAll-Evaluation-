@@ -349,7 +349,7 @@ export default function UserManagementPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto"></div>
-          <p className="mt-4 text-slate-300">Loading users...</p>
+          <p className="mt-4 text-slate-200">Loading users...</p>
         </div>
       </div>
     )
@@ -367,7 +367,7 @@ export default function UserManagementPage() {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">User Management</h1>
-                <p className="text-sm text-slate-300">Manage pathologists and administrators</p>
+                <p className="text-sm text-slate-200">Manage pathologists and administrators</p>
               </div>
             </div>
             <button
@@ -386,13 +386,13 @@ export default function UserManagementPage() {
         <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-300" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-200" />
               <input
                 type="text"
                 placeholder="Search users..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="w-full pl-10 pr-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </div>
 
@@ -420,22 +420,22 @@ export default function UserManagementPage() {
             <table className="min-w-full divide-y divide-slate-700/50">
               <thead className="bg-slate-900/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                     User
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                     Role
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                     Specialty
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                     Institution
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                     Created
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -452,7 +452,7 @@ export default function UserManagementPage() {
                         </div>
                         <div className="ml-4">
                           <div className="text-sm font-medium text-white">{user.full_name}</div>
-                          <div className="text-sm text-slate-300">{user.email}</div>
+                          <div className="text-sm text-slate-200">{user.email}</div>
                         </div>
                       </div>
                     </td>
@@ -465,13 +465,13 @@ export default function UserManagementPage() {
                         {user.role}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-200">
                       {user.specialty || 'N/A'}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-200">
                       {user.institution || 'N/A'}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-200">
                       {formatDate(user.created_at)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -507,7 +507,7 @@ export default function UserManagementPage() {
                 <h3 className="text-lg font-medium text-white">Add New User</h3>
                 <button
                   onClick={() => setShowAddModal(false)}
-                  className="text-slate-300 hover:text-slate-300 transition-colors"
+                  className="text-slate-200 hover:text-slate-200 transition-colors"
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -521,14 +521,14 @@ export default function UserManagementPage() {
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Email *
                   </label>
                   <input
                     type="email"
                     value={newUser.email}
                     onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                       errors.email ? 'border-red-500' : 'border-slate-700'
                     }`}
                     placeholder="user@example.com"
@@ -537,7 +537,7 @@ export default function UserManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Password *
                   </label>
                   <div className="relative">
@@ -545,7 +545,7 @@ export default function UserManagementPage() {
                       type={showPassword ? 'text' : 'password'}
                       value={newUser.password}
                       onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-                      className={`w-full px-3 py-2 pr-10 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+                      className={`w-full px-3 py-2 pr-10 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                         errors.password ? 'border-red-500' : 'border-slate-700'
                       }`}
                       placeholder="Password"
@@ -556,9 +556,9 @@ export default function UserManagementPage() {
                       className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-slate-300" />
+                        <EyeOff className="h-4 w-4 text-slate-200" />
                       ) : (
-                        <Eye className="h-4 w-4 text-slate-300" />
+                        <Eye className="h-4 w-4 text-slate-200" />
                       )}
                     </button>
                   </div>
@@ -566,14 +566,14 @@ export default function UserManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Full Name *
                   </label>
                   <input
                     type="text"
                     value={newUser.full_name}
                     onChange={(e) => setNewUser({ ...newUser, full_name: e.target.value })}
-                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                       errors.full_name ? 'border-red-500' : 'border-slate-700'
                     }`}
                     placeholder="Dr. John Smith"
@@ -582,14 +582,14 @@ export default function UserManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Specialty *
                   </label>
                   <input
                     type="text"
                     value={newUser.specialty}
                     onChange={(e) => setNewUser({ ...newUser, specialty: e.target.value })}
-                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                       errors.specialty ? 'border-red-500' : 'border-slate-700'
                     }`}
                     placeholder="Pathology"
@@ -598,14 +598,14 @@ export default function UserManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Institution *
                   </label>
                   <input
                     type="text"
                     value={newUser.institution}
                     onChange={(e) => setNewUser({ ...newUser, institution: e.target.value })}
-                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                       errors.institution ? 'border-red-500' : 'border-slate-700'
                     }`}
                     placeholder="Medical Center"
@@ -614,7 +614,7 @@ export default function UserManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Role *
                   </label>
                   <select
@@ -656,7 +656,7 @@ export default function UserManagementPage() {
                 <h3 className="text-lg font-medium text-white">Edit User</h3>
                 <button
                   onClick={() => setShowEditModal(false)}
-                  className="text-slate-300 hover:text-slate-300 transition-colors"
+                  className="text-slate-200 hover:text-slate-200 transition-colors"
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -670,27 +670,27 @@ export default function UserManagementPage() {
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Email
                   </label>
                   <input
                     type="email"
                     value={editingUser.email}
                     disabled
-                    className="w-full px-3 py-2 bg-slate-900/30 border border-slate-700 rounded-xl text-slate-300"
+                    className="w-full px-3 py-2 bg-slate-900/30 border border-slate-700 rounded-xl text-slate-200"
                   />
-                  <p className="mt-1 text-xs text-slate-300">Email cannot be changed</p>
+                  <p className="mt-1 text-xs text-slate-200">Email cannot be changed</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Full Name *
                   </label>
                   <input
                     type="text"
                     value={editingUser.full_name}
                     onChange={(e) => setEditingUser({ ...editingUser, full_name: e.target.value })}
-                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                       errors.full_name ? 'border-red-500' : 'border-slate-700'
                     }`}
                   />
@@ -698,14 +698,14 @@ export default function UserManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Specialty *
                   </label>
                   <input
                     type="text"
                     value={editingUser.specialty || ''}
                     onChange={(e) => setEditingUser({ ...editingUser, specialty: e.target.value })}
-                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                       errors.specialty ? 'border-red-500' : 'border-slate-700'
                     }`}
                   />
@@ -713,14 +713,14 @@ export default function UserManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Institution *
                   </label>
                   <input
                     type="text"
                     value={editingUser.institution || ''}
                     onChange={(e) => setEditingUser({ ...editingUser, institution: e.target.value })}
-                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
+                    className={`w-full px-3 py-2 bg-slate-900/50 border rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 ${
                       errors.institution ? 'border-red-500' : 'border-slate-700'
                     }`}
                   />
@@ -728,7 +728,7 @@ export default function UserManagementPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-1">
+                  <label className="block text-sm font-medium text-slate-200 mb-1">
                     Role *
                   </label>
                   <select

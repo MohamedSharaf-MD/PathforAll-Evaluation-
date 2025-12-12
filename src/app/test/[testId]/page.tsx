@@ -331,7 +331,7 @@ export default function TestInterface() {
       <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
-          <p className="text-slate-300">Loading test session...</p>
+          <p className="text-slate-200">Loading test session...</p>
         </div>
       </div>
     )
@@ -343,7 +343,7 @@ export default function TestInterface() {
         <div className="text-center">
           <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-white mb-2">Test Not Found</h2>
-          <p className="text-slate-300">The requested test session could not be loaded.</p>
+          <p className="text-slate-200">The requested test session could not be loaded.</p>
         </div>
       </div>
     )
@@ -356,13 +356,13 @@ export default function TestInterface() {
           <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-8">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-white mb-2">{testSession.title}</h1>
-              <p className="text-slate-300">{testSession.description}</p>
+              <p className="text-slate-200">{testSession.description}</p>
             </div>
 
             <div className="mb-8">
               <h2 className="text-xl font-semibold text-white mb-4">Instructions</h2>
               <div className="prose prose-gray max-w-none">
-                <div className="whitespace-pre-line text-slate-300 leading-relaxed">
+                <div className="whitespace-pre-line text-slate-200 leading-relaxed">
                   {testSession.instructions}
                 </div>
               </div>
@@ -416,13 +416,13 @@ export default function TestInterface() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <h1 className="text-lg font-semibold text-white">{testSession.title}</h1>
-              <div className="text-sm text-slate-300">
+              <div className="text-sm text-slate-200">
                 Case {currentCaseIndex + 1} of {testSession.cases.length}
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-sm text-slate-300">
+              <div className="flex items-center space-x-2 text-sm text-slate-200">
                 <Clock className="h-4 w-4" />
                 <span>No time limit</span>
               </div>
@@ -454,7 +454,7 @@ export default function TestInterface() {
               <div className="p-4 border-b border-slate-700/50 flex justify-between items-center">
                 <h2 className="text-lg font-medium text-white">{currentCase.title}</h2>
                 {saving && (
-                  <div className="flex items-center text-sm text-slate-300">
+                  <div className="flex items-center text-sm text-slate-200">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-teal-500 mr-2"></div>
                     Saving...
                   </div>
@@ -479,7 +479,7 @@ export default function TestInterface() {
             <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl h-full flex flex-col">
               <div className="p-6 flex-1">
                 <h3 className="text-lg font-medium text-white mb-4">Question</h3>
-                <p className="text-slate-300 mb-6 leading-relaxed">{currentCase.question}</p>
+                <p className="text-slate-200 mb-6 leading-relaxed">{currentCase.question}</p>
 
                 <div className="space-y-3">
                   {currentCase.choices.map((choice, index) => (
@@ -525,7 +525,7 @@ export default function TestInterface() {
                     {savingProgress ? 'Saving...' : 'Save Progress'}
                   </button>
 
-                  <span className="text-sm text-slate-300">
+                  <span className="text-sm text-slate-200">
                     {currentCaseIndex + 1} of {testSession.cases.length}
                   </span>
                 </div>
@@ -534,7 +534,7 @@ export default function TestInterface() {
                   <button
                     onClick={previousCase}
                     disabled={currentCaseIndex === 0}
-                    className="flex items-center space-x-2 px-4 py-2 text-slate-300 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center space-x-2 px-4 py-2 text-slate-200 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronLeft className="h-4 w-4" />
                     <span>Previous</span>

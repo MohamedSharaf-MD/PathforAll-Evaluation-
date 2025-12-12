@@ -237,7 +237,7 @@ export default function PathologistDashboard() {
       case 'in_progress':
         return <Clock className="h-5 w-5 text-yellow-400" />
       default:
-        return <AlertCircle className="h-5 w-5 text-slate-300" />
+        return <AlertCircle className="h-5 w-5 text-slate-200" />
     }
   }
 
@@ -248,7 +248,7 @@ export default function PathologistDashboard() {
       case 'in_progress':
         return 'bg-yellow-500/10 border border-yellow-500/20 text-yellow-400'
       default:
-        return 'bg-slate-500/10 border border-slate-500/20 text-slate-300'
+        return 'bg-slate-500/10 border border-slate-500/20 text-slate-200'
     }
   }
 
@@ -257,7 +257,7 @@ export default function PathologistDashboard() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto"></div>
-          <p className="mt-4 text-slate-300">Loading dashboard...</p>
+          <p className="mt-4 text-slate-200">Loading dashboard...</p>
         </div>
       </div>
     )
@@ -274,12 +274,12 @@ export default function PathologistDashboard() {
                 <Microscope className="h-8 w-8 text-teal-400" />
                 <h1 className="text-2xl font-bold text-white">PathforAll</h1>
               </div>
-              <span className="text-sm text-slate-300">Pathologist Dashboard</span>
+              <span className="text-sm text-slate-200">Pathologist Dashboard</span>
             </div>
             <div className="flex items-center space-x-4">
               <div className="text-right">
                 <p className="text-sm font-medium text-white">{userProfile?.full_name || 'User'}</p>
-                <p className="text-xs text-slate-300">{userProfile?.specialty || 'Pathologist'}</p>
+                <p className="text-xs text-slate-200">{userProfile?.specialty || 'Pathologist'}</p>
               </div>
               <button
                 onClick={handleLogout}
@@ -308,7 +308,7 @@ export default function PathologistDashboard() {
                 className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
                     ? 'border-teal-500 text-teal-400'
-                    : 'border-transparent text-slate-300 hover:text-slate-300 hover:border-slate-600'
+                    : 'border-transparent text-slate-200 hover:text-slate-200 hover:border-slate-600'
                 }`}
               >
                 <tab.icon className="h-5 w-5" />
@@ -329,7 +329,7 @@ export default function PathologistDashboard() {
                     <FileText className="h-8 w-8 text-teal-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-300">Total Assigned</p>
+                    <p className="text-sm font-medium text-slate-200">Total Assigned</p>
                     <p className="text-2xl font-semibold text-white">{stats.totalAssigned}</p>
                   </div>
                 </div>
@@ -341,7 +341,7 @@ export default function PathologistDashboard() {
                     <Clock className="h-8 w-8 text-yellow-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-300">Pending Tests</p>
+                    <p className="text-sm font-medium text-slate-200">Pending Tests</p>
                     <p className="text-2xl font-semibold text-white">{stats.pendingTests}</p>
                   </div>
                 </div>
@@ -353,7 +353,7 @@ export default function PathologistDashboard() {
                     <CheckCircle className="h-8 w-8 text-green-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-300">Completed Tests</p>
+                    <p className="text-sm font-medium text-slate-200">Completed Tests</p>
                     <p className="text-2xl font-semibold text-white">{stats.completedTests}</p>
                   </div>
                 </div>
@@ -365,7 +365,7 @@ export default function PathologistDashboard() {
                     <BarChart3 className="h-8 w-8 text-cyan-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-300">Total Cases</p>
+                    <p className="text-sm font-medium text-slate-200">Total Cases</p>
                     <p className="text-2xl font-semibold text-white">{stats.totalCases}</p>
                   </div>
                 </div>
@@ -380,8 +380,8 @@ export default function PathologistDashboard() {
               <div className="p-6">
                 {assignedTests.length === 0 ? (
                   <div className="text-center py-8">
-                    <FileText className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                    <p className="text-slate-300">No tests assigned yet</p>
+                    <FileText className="h-12 w-12 text-slate-200 mx-auto mb-4" />
+                    <p className="text-slate-200">No tests assigned yet</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -391,7 +391,7 @@ export default function PathologistDashboard() {
                           {getStatusIcon(test.status)}
                           <div>
                             <h4 className="font-medium text-white">{test.title}</h4>
-                            <p className="text-sm text-slate-300">{test.case_count} cases</p>
+                            <p className="text-sm text-slate-200">{test.case_count} cases</p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -444,8 +444,8 @@ export default function PathologistDashboard() {
             <div className="p-6">
               {assignedTests.length === 0 ? (
                 <div className="text-center py-8">
-                  <FileText className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                  <p className="text-slate-300">No tests assigned yet</p>
+                  <FileText className="h-12 w-12 text-slate-200 mx-auto mb-4" />
+                  <p className="text-slate-200">No tests assigned yet</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -460,20 +460,20 @@ export default function PathologistDashboard() {
                               {test.status.replace('_', ' ')}
                             </span>
                           </div>
-                          <p className="text-slate-300 mb-4">{test.description}</p>
+                          <p className="text-slate-200 mb-4">{test.description}</p>
 
                           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                             <div>
-                              <p className="text-slate-300">Cases</p>
+                              <p className="text-slate-200">Cases</p>
                               <p className="font-medium text-white">{test.case_count}</p>
                             </div>
                             <div>
-                              <p className="text-slate-300">Assigned</p>
+                              <p className="text-slate-200">Assigned</p>
                               <p className="font-medium text-white">{formatDate(test.assigned_at)}</p>
                             </div>
                             {test.completed_at && (
                               <div>
-                                <p className="text-slate-300">Completed</p>
+                                <p className="text-slate-200">Completed</p>
                                 <p className="font-medium text-white">{formatDate(test.completed_at)}</p>
                               </div>
                             )}
@@ -527,8 +527,8 @@ export default function PathologistDashboard() {
             <div className="p-6">
               {assignedTests.filter(t => t.status === 'completed').length === 0 ? (
                 <div className="text-center py-8">
-                  <CheckCircle className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                  <p className="text-slate-300">No completed tests yet</p>
+                  <CheckCircle className="h-12 w-12 text-slate-200 mx-auto mb-4" />
+                  <p className="text-slate-200">No completed tests yet</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -541,7 +541,7 @@ export default function PathologistDashboard() {
                             <CheckCircle className="h-5 w-5 text-green-400" />
                             <div>
                               <h4 className="font-medium text-white">{test.title}</h4>
-                              <p className="text-sm text-slate-300">
+                              <p className="text-sm text-slate-200">
                                 Completed {test.completed_at && formatDate(test.completed_at)}
                               </p>
                             </div>
