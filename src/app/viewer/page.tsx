@@ -41,7 +41,7 @@ export default function ViewerPage() {
             </div>
 
             <div className="mt-4 flex items-center justify-between">
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-slate-300">
                 Controls: Mouse wheel to zoom, drag to pan, navigator in top-right corner
               </p>
             </div>
