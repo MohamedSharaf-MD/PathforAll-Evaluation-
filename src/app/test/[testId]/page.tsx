@@ -118,7 +118,7 @@ export default function TestInterface() {
             slide_height: 25344,
             max_level: 9
           }
-          
+
           return {
             ...case_,
             slide_path: slidePath,
@@ -131,7 +131,7 @@ export default function TestInterface() {
 
       setTestSession(transformedSession)
       setLoading(false)
-      
+
       // Load existing responses after test session is set
       await loadExistingResponses(transformedSession)
     } catch (error) {
@@ -328,10 +328,10 @@ export default function TestInterface() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading test session...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <p className="text-slate-300">Loading test session...</p>
         </div>
       </div>
     )
@@ -339,11 +339,11 @@ export default function TestInterface() {
 
   if (!testSession) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Test Not Found</h2>
-          <p className="text-gray-600">The requested test session could not be loaded.</p>
+          <h2 className="text-xl font-semibold text-white mb-2">Test Not Found</h2>
+          <p className="text-slate-300">The requested test session could not be loaded.</p>
         </div>
       </div>
     )
@@ -351,37 +351,37 @@ export default function TestInterface() {
 
   if (showInstructions) {
     return (
-      <div className="min-h-screen bg-gray-50 py-8">
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-8">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">{testSession.title}</h1>
-              <p className="text-gray-600">{testSession.description}</p>
+              <h1 className="text-3xl font-bold text-white mb-2">{testSession.title}</h1>
+              <p className="text-slate-300">{testSession.description}</p>
             </div>
 
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Instructions</h2>
+              <h2 className="text-xl font-semibold text-white mb-4">Instructions</h2>
               <div className="prose prose-gray max-w-none">
-                <div className="whitespace-pre-line text-gray-700 leading-relaxed">
+                <div className="whitespace-pre-line text-slate-300 leading-relaxed">
                   {testSession.instructions}
                 </div>
               </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="font-semibold text-blue-900 mb-2">Test Details</h3>
-                <ul className="text-blue-800 space-y-1">
+              <div className="bg-teal-500/10 border border-teal-500/20 p-6 rounded-lg">
+                <h3 className="font-semibold text-teal-400 mb-2">Test Details</h3>
+                <ul className="text-teal-300 space-y-1">
                   <li>• {testSession.cases.length} cases to evaluate</li>
                   <li>• No time limit per case</li>
                   <li>• You can navigate between cases</li>
                   <li>• All responses are automatically saved</li>
                 </ul>
               </div>
-              
-              <div className="bg-amber-50 p-6 rounded-lg">
-                <h3 className="font-semibold text-amber-900 mb-2">Viewer Controls</h3>
-                <ul className="text-amber-800 space-y-1">
+
+              <div className="bg-amber-500/10 border border-amber-500/20 p-6 rounded-lg">
+                <h3 className="font-semibold text-amber-400 mb-2">Viewer Controls</h3>
+                <ul className="text-amber-300 space-y-1">
                   <li>• Mouse wheel: Zoom in/out</li>
                   <li>• Click and drag: Pan the image</li>
                   <li>• Navigator: Quick navigation</li>
@@ -393,7 +393,7 @@ export default function TestInterface() {
             <div className="text-center">
               <button
                 onClick={startTest}
-                className="bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white px-8 py-3 rounded-lg font-medium shadow-lg shadow-teal-500/25 transition-all focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:ring-offset-slate-900"
               >
                 Start Test
               </button>
@@ -409,37 +409,37 @@ export default function TestInterface() {
   const progress = ((currentCaseIndex + 1) / testSession.cases.length) * 100
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <header className="bg-slate-900/80 backdrop-blur-sm border-b border-slate-700/50 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
-              <h1 className="text-lg font-semibold text-gray-900">{testSession.title}</h1>
-              <div className="text-sm text-gray-500">
+              <h1 className="text-lg font-semibold text-white">{testSession.title}</h1>
+              <div className="text-sm text-slate-400">
                 Case {currentCaseIndex + 1} of {testSession.cases.length}
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <div className="flex items-center space-x-2 text-sm text-slate-400">
                 <Clock className="h-4 w-4" />
                 <span>No time limit</span>
               </div>
-              
+
               {isAnswered && (
-                <div className="flex items-center space-x-2 text-sm text-green-600">
+                <div className="flex items-center space-x-2 text-sm text-green-400">
                   <CheckCircle2 className="h-4 w-4" />
                   <span>Answered</span>
                 </div>
               )}
             </div>
           </div>
-          
+
           {/* Progress bar */}
-          <div className="h-1 bg-gray-200">
-            <div 
-              className="h-full bg-indigo-600 transition-all duration-300"
+          <div className="h-1 bg-slate-700">
+            <div
+              className="h-full bg-teal-500 transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -450,43 +450,45 @@ export default function TestInterface() {
         <div className="grid lg:grid-cols-3 gap-6 h-[calc(100vh-180px)]">
           {/* WSI Viewer */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-full flex flex-col">
-              <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                <h2 className="text-lg font-medium text-gray-900">{currentCase.title}</h2>
+            <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl h-full flex flex-col">
+              <div className="p-4 border-b border-slate-700/50 flex justify-between items-center">
+                <h2 className="text-lg font-medium text-white">{currentCase.title}</h2>
                 {saving && (
-                  <div className="flex items-center text-sm text-gray-500">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600 mr-2"></div>
+                  <div className="flex items-center text-sm text-slate-400">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-teal-500 mr-2"></div>
                     Saving...
                   </div>
                 )}
               </div>
               <div className="flex-1 p-4">
-                <WSIViewer
-                  slidePath={currentCase.slide_path}
-                  slideWidth={currentCase.slide_width}
-                  slideHeight={currentCase.slide_height}
-                  maxLevel={currentCase.max_level}
-                  height="100%"
-                />
+                <div className="bg-slate-900/50 rounded-lg h-full">
+                  <WSIViewer
+                    slidePath={currentCase.slide_path}
+                    slideWidth={currentCase.slide_width}
+                    slideHeight={currentCase.slide_height}
+                    maxLevel={currentCase.max_level}
+                    height="100%"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Question Panel */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 h-full flex flex-col">
+            <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl h-full flex flex-col">
               <div className="p-6 flex-1">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Question</h3>
-                <p className="text-gray-700 mb-6 leading-relaxed">{currentCase.question}</p>
-                
+                <h3 className="text-lg font-medium text-white mb-4">Question</h3>
+                <p className="text-slate-300 mb-6 leading-relaxed">{currentCase.question}</p>
+
                 <div className="space-y-3">
                   {currentCase.choices.map((choice, index) => (
                     <label
                       key={index}
                       className={`flex items-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
                         responses[currentCase.id] === choice
-                          ? 'border-indigo-500 bg-indigo-50'
-                          : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                          ? 'border-teal-500 bg-teal-500/10'
+                          : 'border-slate-700 hover:border-slate-600 hover:bg-slate-700/50'
                       }`}
                     >
                       <input
@@ -499,40 +501,40 @@ export default function TestInterface() {
                       />
                       <div className={`w-4 h-4 rounded-full border-2 mr-3 flex items-center justify-center ${
                         responses[currentCase.id] === choice
-                          ? 'border-indigo-500 bg-indigo-500'
-                          : 'border-gray-300'
+                          ? 'border-teal-500 bg-teal-500'
+                          : 'border-slate-600'
                       }`}>
                         {responses[currentCase.id] === choice && (
                           <div className="w-2 h-2 rounded-full bg-white" />
                         )}
                       </div>
-                      <span className="text-gray-900 font-medium">{choice}</span>
+                      <span className="text-white font-medium">{choice}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
               {/* Navigation */}
-              <div className="p-6 border-t border-gray-200">
+              <div className="p-6 border-t border-slate-700/50">
                 <div className="flex justify-between items-center mb-4">
                   <button
                     onClick={saveProgress}
                     disabled={savingProgress}
-                    className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {savingProgress ? 'Saving...' : 'Save Progress'}
                   </button>
-                  
-                  <span className="text-sm text-gray-500">
+
+                  <span className="text-sm text-slate-400">
                     {currentCaseIndex + 1} of {testSession.cases.length}
                   </span>
                 </div>
-                
+
                 <div className="flex justify-between">
                   <button
                     onClick={previousCase}
                     disabled={currentCaseIndex === 0}
-                    className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center space-x-2 px-4 py-2 text-slate-400 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronLeft className="h-4 w-4" />
                     <span>Previous</span>
@@ -541,7 +543,7 @@ export default function TestInterface() {
                   <button
                     onClick={nextCase}
                     disabled={!isAnswered || submitting}
-                    className="flex items-center space-x-2 bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center space-x-2 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white px-6 py-2 rounded-lg font-medium shadow-lg shadow-teal-500/25 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     <span>
                       {currentCaseIndex === testSession.cases.length - 1 ? 'Complete Test' : 'Next Case'}

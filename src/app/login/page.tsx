@@ -3,7 +3,8 @@
 import { useState, useEffect, Suspense } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { UserPlus, LogIn } from 'lucide-react'
+import { UserPlus, LogIn, Microscope, Mail, Lock, User, Building, Stethoscope } from 'lucide-react'
+import Link from 'next/link'
 
 function LoginForm() {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -23,11 +24,11 @@ function LoginForm() {
   useEffect(() => {
     const mode = searchParams.get('mode')
     const verified = searchParams.get('verified')
-    
+
     if (mode === 'signup') {
       setIsSignUp(true)
     }
-    
+
     if (verified === 'true') {
       setSuccess('Email verified successfully! You can now sign in.')
     }
@@ -102,14 +103,14 @@ function LoginForm() {
         }
 
         setSuccess('Account created successfully! Please check your email to verify your account.')
-        
+
         // Clear form
         setEmail('')
         setPassword('')
         setFullName('')
         setSpecialty('')
         setInstitution('')
-        
+
         // Switch to login mode
         setTimeout(() => {
           setIsSignUp(false)
@@ -139,175 +140,212 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4 relative">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative w-full max-w-md">
+        {/* Logo and Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">PathforAll</h1>
-          <p className="text-gray-600">Case Evaluation Platform</p>
+          <Link href="/" className="inline-flex items-center space-x-3 mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-teal-500/25">
+              <Microscope className="w-7 h-7 text-white" />
+            </div>
+            <span className="text-2xl font-bold text-white">PathforAll</span>
+          </Link>
+          <p className="text-slate-400">WSI Evaluation Platform</p>
         </div>
 
-        {/* Mode Toggle */}
-        <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
-          <button
-            type="button"
-            onClick={() => setIsSignUp(false)}
-            className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-              !isSignUp 
-                ? 'bg-white text-indigo-600 shadow-sm' 
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <LogIn className="h-4 w-4" />
-            <span>Sign In</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsSignUp(true)}
-            className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-              isSignUp 
-                ? 'bg-white text-indigo-600 shadow-sm' 
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <UserPlus className="h-4 w-4" />
-            <span>Get Started</span>
-          </button>
-        </div>
-
-        <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-6">
-          {/* Sign Up Fields */}
-          {isSignUp && (
-            <>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required={isSignUp}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  placeholder="Dr. John Smith"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Specialty *
-                </label>
-                <input
-                  type="text"
-                  value={specialty}
-                  onChange={(e) => setSpecialty(e.target.value)}
-                  required={isSignUp}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  placeholder="Pathology, Dermatology, etc."
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Institution *
-                </label>
-                <input
-                  type="text"
-                  value={institution}
-                  onChange={(e) => setInstitution(e.target.value)}
-                  required={isSignUp}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  placeholder="Hospital Name, University, etc."
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Role *
-                </label>
-                <select
-                  value={role}
-                  onChange={(e) => setRole(e.target.value as 'pathologist' | 'admin')}
-                  required={isSignUp}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value="pathologist">Pathologist</option>
-                  <option value="admin">Administrator</option>
-                </select>
-              </div>
-            </>
-          )}
-
-          {/* Common Fields */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email Address *
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="doctor@hospital.com"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Password *
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="••••••••"
-              minLength={6}
-            />
-            {isSignUp && (
-              <p className="mt-1 text-xs text-gray-500">Password must be at least 6 characters</p>
-            )}
-          </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm">
-              {success}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 disabled:opacity-50"
-          >
-            {loading 
-              ? (isSignUp ? 'Creating Account...' : 'Signing in...') 
-              : (isSignUp ? 'Create Account' : 'Sign In')
-            }
-          </button>
-        </form>
-
-        {/* Additional Info */}
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            {isSignUp 
-              ? 'Already have an account?' 
-              : "Don't have an account?"
-            }
+        {/* Card */}
+        <div className="bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-8 shadow-xl">
+          {/* Mode Toggle */}
+          <div className="flex mb-8 bg-slate-900/50 rounded-xl p-1">
             <button
               type="button"
-              onClick={toggleMode}
-              className="ml-1 text-indigo-600 hover:text-indigo-500 font-medium"
+              onClick={() => setIsSignUp(false)}
+              className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg text-sm font-medium transition-all ${
+                !isSignUp
+                  ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/25'
+                  : 'text-slate-400 hover:text-white'
+              }`}
             >
-              {isSignUp ? 'Sign In' : 'Get Started'}
+              <LogIn className="h-4 w-4" />
+              <span>Sign In</span>
             </button>
+            <button
+              type="button"
+              onClick={() => setIsSignUp(true)}
+              className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg text-sm font-medium transition-all ${
+                isSignUp
+                  ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/25'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <UserPlus className="h-4 w-4" />
+              <span>Get Started</span>
+            </button>
+          </div>
+
+          <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-5">
+            {/* Sign Up Fields */}
+            {isSignUp && (
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Full Name *
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    <input
+                      type="text"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      required={isSignUp}
+                      className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                      placeholder="Dr. John Smith"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Specialty *
+                  </label>
+                  <div className="relative">
+                    <Stethoscope className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    <input
+                      type="text"
+                      value={specialty}
+                      onChange={(e) => setSpecialty(e.target.value)}
+                      required={isSignUp}
+                      className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                      placeholder="Pathology, Dermatology, etc."
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Institution *
+                  </label>
+                  <div className="relative">
+                    <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    <input
+                      type="text"
+                      value={institution}
+                      onChange={(e) => setInstitution(e.target.value)}
+                      required={isSignUp}
+                      className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                      placeholder="Hospital Name, University, etc."
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">
+                    Role *
+                  </label>
+                  <select
+                    value={role}
+                    onChange={(e) => setRole(e.target.value as 'pathologist' | 'admin')}
+                    required={isSignUp}
+                    className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                  >
+                    <option value="pathologist">Pathologist</option>
+                    <option value="admin">Administrator</option>
+                  </select>
+                </div>
+              </>
+            )}
+
+            {/* Common Fields */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                Email Address *
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                  placeholder="doctor@hospital.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">
+                Password *
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full pl-10 pr-4 py-3 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
+                  placeholder="••••••••"
+                  minLength={6}
+                />
+              </div>
+              {isSignUp && (
+                <p className="mt-2 text-xs text-slate-400">Password must be at least 6 characters</p>
+              )}
+            </div>
+
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-3 rounded-xl text-sm">
+                {success}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white py-3 px-4 rounded-xl font-semibold transition-all shadow-lg shadow-teal-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading
+                ? (isSignUp ? 'Creating Account...' : 'Signing in...')
+                : (isSignUp ? 'Create Account' : 'Sign In')
+              }
+            </button>
+          </form>
+
+          {/* Additional Info */}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-slate-400">
+              {isSignUp
+                ? 'Already have an account?'
+                : "Don't have an account?"
+              }
+              <button
+                type="button"
+                onClick={toggleMode}
+                className="ml-1 text-teal-400 hover:text-teal-300 font-medium transition-colors"
+              >
+                {isSignUp ? 'Sign In' : 'Get Started'}
+              </button>
+            </p>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-8">
+          <p className="text-xs text-slate-400">
+            © 2025 PathforAll. Developed by Mohamed Sharaf, MD
           </p>
         </div>
       </div>
@@ -317,7 +355,11 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500"></div>
+      </div>
+    }>
       <LoginForm />
     </Suspense>
   )

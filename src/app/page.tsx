@@ -122,7 +122,7 @@ export default function HomePage() {
                 Contact
               </a>
               <span className="text-slate-600">|</span>
-              <span className="text-slate-500">© 2025 PathforAll</span>
+              <span className="text-slate-400">© 2025 PathforAll</span>
             </div>
           </div>
         </div>
