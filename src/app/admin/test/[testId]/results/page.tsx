@@ -313,7 +313,7 @@ export default function TestResultsPage() {
       case 'in_progress':
         return <Clock className="h-5 w-5 text-yellow-400" />
       default:
-        return <XCircle className="h-5 w-5 text-slate-500" />
+        return <XCircle className="h-5 w-5 text-slate-400" />
     }
   }
 
@@ -404,7 +404,7 @@ export default function TestResultsPage() {
         <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-500" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
               <input
                 type="text"
                 placeholder="Search by name, email, specialty..."
@@ -481,7 +481,7 @@ export default function TestResultsPage() {
                           <div className="text-sm font-medium text-white">{result.user_name}</div>
                           <div className="text-sm text-slate-400">{result.user_email}</div>
                           {result.user_specialty && (
-                            <div className="text-xs text-slate-500">{result.user_specialty}</div>
+                            <div className="text-xs text-slate-400">{result.user_specialty}</div>
                           )}
                         </div>
                       </div>

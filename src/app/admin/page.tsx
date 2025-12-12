@@ -557,7 +557,7 @@ export default function AdminDashboard() {
             {/* Search and Actions */}
             <div className="flex justify-between items-center">
               <div className="relative">
-                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Search test sessions..."
@@ -667,7 +667,7 @@ export default function AdminDashboard() {
             {/* Search and Actions */}
             <div className="flex justify-between items-center">
               <div className="relative flex-1 max-w-md">
-                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Search users..."
@@ -746,7 +746,7 @@ export default function AdminDashboard() {
         {activeTab === 'analytics' && (
           <div className="space-y-6">
             <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-8 text-center">
-              <BarChart3 className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+              <BarChart3 className="h-12 w-12 text-slate-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-white mb-2">Advanced Analytics</h3>
               <p className="text-slate-400">
                 Detailed analytics and reporting features will be available in the next phase of development.

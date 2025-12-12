@@ -374,7 +374,7 @@ export default function TestAssignmentPage() {
                 Deadline (Optional)
               </label>
               <div className="relative">
-                <Calendar className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                <Calendar className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                 <input
                   type="date"
                   value={deadline}
@@ -424,7 +424,7 @@ export default function TestAssignmentPage() {
 
             <div className="mt-4">
               <div className="relative">
-                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500" />
+                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Search pathologists..."

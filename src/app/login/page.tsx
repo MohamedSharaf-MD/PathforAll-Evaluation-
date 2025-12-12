@@ -198,7 +198,7 @@ function LoginForm() {
                     Full Name *
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type="text"
                       value={fullName}
@@ -215,7 +215,7 @@ function LoginForm() {
                     Specialty *
                   </label>
                   <div className="relative">
-                    <Stethoscope className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                    <Stethoscope className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type="text"
                       value={specialty}
@@ -232,7 +232,7 @@ function LoginForm() {
                     Institution *
                   </label>
                   <div className="relative">
-                    <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                    <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
                     <input
                       type="text"
                       value={institution}
@@ -267,7 +267,7 @@ function LoginForm() {
                 Email Address *
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
                 <input
                   type="email"
                   value={email}
@@ -284,7 +284,7 @@ function LoginForm() {
                 Password *
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-400" />
                 <input
                   type="password"
                   value={password}
@@ -296,7 +296,7 @@ function LoginForm() {
                 />
               </div>
               {isSignUp && (
-                <p className="mt-2 text-xs text-slate-500">Password must be at least 6 characters</p>
+                <p className="mt-2 text-xs text-slate-400">Password must be at least 6 characters</p>
               )}
             </div>
 
@@ -344,7 +344,7 @@ function LoginForm() {
 
         {/* Footer */}
         <div className="text-center mt-8">
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-400">
             © 2025 PathforAll. Developed by Mohamed Sharaf, MD
           </p>
         </div>

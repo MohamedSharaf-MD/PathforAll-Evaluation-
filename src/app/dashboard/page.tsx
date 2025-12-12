@@ -380,7 +380,7 @@ export default function PathologistDashboard() {
               <div className="p-6">
                 {assignedTests.length === 0 ? (
                   <div className="text-center py-8">
-                    <FileText className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                    <FileText className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                     <p className="text-slate-400">No tests assigned yet</p>
                   </div>
                 ) : (
@@ -444,7 +444,7 @@ export default function PathologistDashboard() {
             <div className="p-6">
               {assignedTests.length === 0 ? (
                 <div className="text-center py-8">
-                  <FileText className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                  <FileText className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                   <p className="text-slate-400">No tests assigned yet</p>
                 </div>
               ) : (
@@ -527,7 +527,7 @@ export default function PathologistDashboard() {
             <div className="p-6">
               {assignedTests.filter(t => t.status === 'completed').length === 0 ? (
                 <div className="text-center py-8">
-                  <CheckCircle className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                  <CheckCircle className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                   <p className="text-slate-400">No completed tests yet</p>
                 </div>
               ) : (

@@ -677,9 +677,9 @@ export default function UserManagementPage() {
                     type="email"
                     value={editingUser.email}
                     disabled
-                    className="w-full px-3 py-2 bg-slate-900/30 border border-slate-700 rounded-xl text-slate-500"
+                    className="w-full px-3 py-2 bg-slate-900/30 border border-slate-700 rounded-xl text-slate-400"
                   />
-                  <p className="mt-1 text-xs text-slate-500">Email cannot be changed</p>
+                  <p className="mt-1 text-xs text-slate-400">Email cannot be changed</p>
                 </div>
 
                 <div>

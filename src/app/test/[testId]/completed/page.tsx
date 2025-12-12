@@ -208,23 +208,23 @@ export default function TestCompletionPage() {
               <h3 className="text-lg font-semibold text-white mb-4">Participant Information</h3>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <dt className="text-sm font-medium text-slate-500">Name</dt>
+                  <dt className="text-sm font-medium text-slate-400">Name</dt>
                   <dd className="text-lg text-white font-medium">{stats.userProfile.full_name}</dd>
                 </div>
                 {stats.userProfile.specialty && (
                   <div>
-                    <dt className="text-sm font-medium text-slate-500">Specialty</dt>
+                    <dt className="text-sm font-medium text-slate-400">Specialty</dt>
                     <dd className="text-lg text-white">{stats.userProfile.specialty}</dd>
                   </div>
                 )}
                 {stats.userProfile.institution && (
                   <div>
-                    <dt className="text-sm font-medium text-slate-500">Institution</dt>
+                    <dt className="text-sm font-medium text-slate-400">Institution</dt>
                     <dd className="text-lg text-white">{stats.userProfile.institution}</dd>
                   </div>
                 )}
                 <div>
-                  <dt className="text-sm font-medium text-slate-500">Test Session</dt>
+                  <dt className="text-sm font-medium text-slate-400">Test Session</dt>
                   <dd className="text-lg text-white">{stats.testTitle}</dd>
                 </div>
               </div>
@@ -324,7 +324,7 @@ export default function TestCompletionPage() {
 
         {/* Footer Note */}
         <div className="text-center mt-12">
-          <p className="text-slate-500 text-sm">
+          <p className="text-slate-400 text-sm">
             Thank you for participating in this pathology evaluation session.
             <br />
             For questions or technical support, please contact your administrator.

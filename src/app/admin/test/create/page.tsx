@@ -312,7 +312,7 @@ export default function CreateTestPage() {
                   }
                 </div>
                 <span className={`ml-3 font-medium transition-colors ${
-                  currentStep === step.id ? 'text-teal-400' : index < ['basic', 'cases', 'preview'].indexOf(currentStep) ? 'text-teal-500' : 'text-slate-500'
+                  currentStep === step.id ? 'text-teal-400' : index < ['basic', 'cases', 'preview'].indexOf(currentStep) ? 'text-teal-500' : 'text-slate-400'
                 }`}>
                   {step.label}
                 </span>
@@ -437,7 +437,7 @@ export default function CreateTestPage() {
 
                   {testSession.cases.length === 0 ? (
                     <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-12 text-center">
-                      <FileImage className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                      <FileImage className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-white mb-2">No cases added yet</h3>
                       <p className="text-slate-400 mb-6">Start by adding your first test case with a slide image and question.</p>
                       <button
@@ -664,7 +664,7 @@ export default function CreateTestPage() {
                   ) : (
                     <div className="h-96 border-2 border-dashed border-slate-700 rounded-lg flex items-center justify-center bg-slate-900/30">
                       <div className="text-center">
-                        <FileImage className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                        <FileImage className="h-12 w-12 text-slate-400 mx-auto mb-4" />
                         <p className="text-slate-400">Select a slide to see preview</p>
                       </div>
                     </div>

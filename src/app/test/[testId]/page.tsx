@@ -525,7 +525,7 @@ export default function TestInterface() {
                     {savingProgress ? 'Saving...' : 'Save Progress'}
                   </button>
 
-                  <span className="text-sm text-slate-500">
+                  <span className="text-sm text-slate-400">
                     {currentCaseIndex + 1} of {testSession.cases.length}
                   </span>
                 </div>
