@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
-import { 
+import {
   ArrowLeft,
   Download,
   Eye,
@@ -15,7 +15,8 @@ import {
   FileText,
   Calendar,
   Filter,
-  Search
+  Search,
+  Microscope
 } from 'lucide-react'
 
 interface TestResult {
@@ -59,7 +60,7 @@ export default function TestResultsPage() {
   const router = useRouter()
   const params = useParams()
   const testId = params.testId as string
-  
+
   const [testSession, setTestSession] = useState<TestSession | null>(null)
   const [testResults, setTestResults] = useState<TestResult[]>([])
   const [selectedResult, setSelectedResult] = useState<TestResult | null>(null)
@@ -308,22 +309,22 @@ export default function TestResultsPage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="h-5 w-5 text-green-500" />
+        return <CheckCircle className="h-5 w-5 text-green-400" />
       case 'in_progress':
-        return <Clock className="h-5 w-5 text-yellow-500" />
+        return <Clock className="h-5 w-5 text-yellow-400" />
       default:
-        return <XCircle className="h-5 w-5 text-gray-400" />
+        return <XCircle className="h-5 w-5 text-slate-500" />
     }
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-500/20 text-green-400 border border-green-500/30'
       case 'in_progress':
-        return 'bg-yellow-100 text-yellow-800'
+        return 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30'
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-slate-500/20 text-slate-400 border border-slate-500/30'
     }
   }
 
@@ -332,9 +333,9 @@ export default function TestResultsPage() {
                          result.user_email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          result.user_specialty?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          result.user_institution?.toLowerCase().includes(searchTerm.toLowerCase())
-    
+
     const matchesStatus = statusFilter === 'all' || result.status === statusFilter
-    
+
     return matchesSearch && matchesStatus
   })
 
@@ -353,37 +354,43 @@ export default function TestResultsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading test results...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto"></div>
+          <p className="mt-4 text-slate-300">Loading test results...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => router.push('/admin')}
-                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+                className="flex items-center space-x-2 text-slate-400 hover:text-white transition-colors"
               >
                 <ArrowLeft className="h-5 w-5" />
                 <span>Back to Admin</span>
               </button>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Test Results</h1>
-                <p className="text-sm text-gray-500">{testSession?.title}</p>
+              <div className="h-8 w-px bg-slate-700"></div>
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg">
+                  <Microscope className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-bold text-white">Test Results</h1>
+                  <p className="text-sm text-slate-400">{testSession?.title}</p>
+                </div>
               </div>
             </div>
             <button
               onClick={exportResults}
-              className="flex items-center space-x-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+              className="flex items-center space-x-2 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white px-4 py-2 rounded-xl shadow-lg shadow-teal-500/25 transition-all"
             >
               <Download className="h-4 w-4" />
               <span>Export CSV</span>
@@ -394,23 +401,23 @@ export default function TestResultsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filters and Search */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-500" />
               <input
                 type="text"
                 placeholder="Search by name, email, specialty..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full pl-10 pr-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
               />
             </div>
-            
+
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as 'all' | 'completed' | 'in_progress' | 'pending')}
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
             >
               <option value="all">All Statuses</option>
               <option value="completed">Completed</option>
@@ -421,7 +428,7 @@ export default function TestResultsPage() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as 'name' | 'time' | 'completed' | 'status')}
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all"
             >
               <option value="name">Sort by Name</option>
               <option value="time">Sort by Time</option>
@@ -432,49 +439,49 @@ export default function TestResultsPage() {
         </div>
 
         {/* Results Table */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900">
+        <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-700/50">
+            <h3 className="text-lg font-medium text-white">
               Results ({sortedResults.length} pathologists)
             </h3>
           </div>
-          
+
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-slate-700/50">
+              <thead className="bg-slate-900/50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Pathologist
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Progress
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Time
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="divide-y divide-slate-700/50">
                 {sortedResults.map((result) => (
-                  <tr key={result.id} className="hover:bg-gray-50">
+                  <tr key={result.id} className="hover:bg-slate-700/50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10">
-                          <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
-                            <User className="h-5 w-5 text-indigo-600" />
+                          <div className="h-10 w-10 rounded-full bg-teal-500/10 flex items-center justify-center">
+                            <User className="h-5 w-5 text-teal-400" />
                           </div>
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{result.user_name}</div>
-                          <div className="text-sm text-gray-500">{result.user_email}</div>
+                          <div className="text-sm font-medium text-white">{result.user_name}</div>
+                          <div className="text-sm text-slate-400">{result.user_email}</div>
                           {result.user_specialty && (
-                            <div className="text-xs text-gray-400">{result.user_specialty}</div>
+                            <div className="text-xs text-slate-500">{result.user_specialty}</div>
                           )}
                         </div>
                       </div>
@@ -488,36 +495,28 @@ export default function TestResultsPage() {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
+                      <div className="text-sm text-white">
                         {result.completed_cases}/{result.total_cases} cases
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 mt-1">
-                        <div 
-                          className="bg-indigo-600 h-2 rounded-full"
+                      <div className="w-full bg-slate-700 rounded-full h-2 mt-1">
+                        <div
+                          className="bg-teal-500 h-2 rounded-full transition-all"
                           style={{ width: `${(result.completed_cases / result.total_cases) * 100}%` }}
                         ></div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {result.completed_cases}/{result.total_cases} cases
-                      </div>
-                      <div className="text-xs text-gray-500">
-                        {result.status === 'completed' ? 'Completed' : 'In Progress'}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-gray-900">
+                      <div className="text-sm text-white">
                         {result.total_time_minutes} min total
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-slate-400">
                         {formatTime(result.average_time_per_case)} avg/case
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button
                         onClick={() => loadCaseResponses(result)}
-                        className="text-indigo-600 hover:text-indigo-900 flex items-center space-x-1"
+                        className="text-teal-400 hover:text-teal-300 flex items-center space-x-1 transition-colors"
                       >
                         <Eye className="h-4 w-4" />
                         <span>View Details</span>
@@ -532,63 +531,63 @@ export default function TestResultsPage() {
 
         {/* Case Details Modal */}
         {selectedResult && (
-          <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div className="relative top-20 mx-auto p-5 border w-11/12 max-w-4xl shadow-lg rounded-md bg-white">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm overflow-y-auto h-full w-full z-50">
+            <div className="relative top-20 mx-auto p-5 border border-slate-700 w-11/12 max-w-4xl shadow-2xl rounded-xl bg-slate-800">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-900">
+                <h3 className="text-lg font-medium text-white">
                   Detailed Results: {selectedResult.user_name}
                 </h3>
                 <button
                   onClick={() => setSelectedResult(null)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-slate-400 hover:text-white transition-colors"
                 >
                   <XCircle className="h-6 w-6" />
                 </button>
               </div>
-              
+
               {loadingDetails ? (
                 <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
-                  <p className="mt-2 text-gray-600">Loading case details...</p>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-500 mx-auto"></div>
+                  <p className="mt-2 text-slate-300">Loading case details...</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {/* Summary Stats */}
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-indigo-600">{selectedResult.completed_cases}</div>
-                      <div className="text-sm text-gray-500">Cases Completed</div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="p-4 bg-teal-500/10 rounded-xl border border-teal-500/20 text-center">
+                      <div className="text-2xl font-bold text-teal-400">{selectedResult.completed_cases}</div>
+                      <div className="text-sm text-slate-400">Cases Completed</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-600">{selectedResult.total_time_minutes}</div>
-                      <div className="text-sm text-gray-500">Total Minutes</div>
+                    <div className="p-4 bg-cyan-500/10 rounded-xl border border-cyan-500/20 text-center">
+                      <div className="text-2xl font-bold text-cyan-400">{selectedResult.total_time_minutes}</div>
+                      <div className="text-sm text-slate-400">Total Minutes</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600">{formatTime(selectedResult.average_time_per_case)}</div>
-                      <div className="text-sm text-gray-500">Avg per Case</div>
+                    <div className="p-4 bg-green-500/10 rounded-xl border border-green-500/20 text-center">
+                      <div className="text-2xl font-bold text-green-400">{formatTime(selectedResult.average_time_per_case)}</div>
+                      <div className="text-sm text-slate-400">Avg per Case</div>
                     </div>
                   </div>
 
                   {/* Case Responses */}
-                  <div className="max-h-96 overflow-y-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                      <thead className="bg-gray-50 sticky top-0">
+                  <div className="max-h-96 overflow-y-auto rounded-xl border border-slate-700/50">
+                    <table className="min-w-full divide-y divide-slate-700/50">
+                      <thead className="bg-slate-900/50 sticky top-0">
                         <tr>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Case</th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Answer</th>
-                          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time</th>
+                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-400 uppercase">Case</th>
+                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-400 uppercase">Answer</th>
+                          <th className="px-4 py-2 text-left text-xs font-medium text-slate-400 uppercase">Time</th>
                         </tr>
                       </thead>
-                      <tbody className="bg-white divide-y divide-gray-200">
+                      <tbody className="divide-y divide-slate-700/50">
                         {caseResponses.map((response) => (
-                          <tr key={response.id}>
-                            <td className="px-4 py-2 text-sm text-gray-900">
+                          <tr key={response.id} className="hover:bg-slate-700/30 transition-colors">
+                            <td className="px-4 py-2 text-sm text-white">
                               Case {response.case_number}
                             </td>
-                            <td className="px-4 py-2 text-sm text-gray-900">
+                            <td className="px-4 py-2 text-sm text-slate-300">
                               {response.user_answer}
                             </td>
-                            <td className="px-4 py-2 text-sm text-gray-900">
+                            <td className="px-4 py-2 text-sm text-slate-300">
                               {formatTime(response.time_spent_seconds)}
                             </td>
                           </tr>

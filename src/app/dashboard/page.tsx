@@ -3,17 +3,18 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import { 
-  FileText, 
-  Clock, 
-  CheckCircle, 
-  AlertCircle, 
-  User, 
+import {
+  FileText,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  User,
   Calendar,
   BarChart3,
   Play,
   Eye,
-  LogOut
+  LogOut,
+  Microscope
 } from 'lucide-react'
 
 interface AssignedTest {
@@ -66,9 +67,9 @@ export default function PathologistDashboard() {
         router.push('/login')
         return
       }
-      
+
       setUser({ id: user.id, email: user.email || '' })
-      
+
       // Load user profile
       const { data: profile, error: profileError } = await supabase
         .from('user_profiles')
@@ -83,7 +84,7 @@ export default function PathologistDashboard() {
       }
 
       setUserProfile(profile)
-      
+
       // Redirect admin users to admin dashboard
       if (profile.role === 'admin') {
         router.push('/admin')
@@ -167,7 +168,7 @@ export default function PathologistDashboard() {
         const completedCasesCount = completedMap.get(assignment.test_session_id) || 0
         const totalCases = caseCountMap.get(assignment.test_session_id) || 0
         const progressPercentage = totalCases > 0 ? Math.round((completedCasesCount / totalCases) * 100) : 0
-        
+
         return {
           id: assignment.id,
           test_session_id: assignment.test_session_id,
@@ -232,54 +233,57 @@ export default function PathologistDashboard() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="h-5 w-5 text-green-500" />
+        return <CheckCircle className="h-5 w-5 text-green-400" />
       case 'in_progress':
-        return <Clock className="h-5 w-5 text-yellow-500" />
+        return <Clock className="h-5 w-5 text-yellow-400" />
       default:
-        return <AlertCircle className="h-5 w-5 text-gray-400" />
+        return <AlertCircle className="h-5 w-5 text-slate-400" />
     }
   }
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-500/10 border border-green-500/20 text-green-400'
       case 'in_progress':
-        return 'bg-yellow-100 text-yellow-800'
+        return 'bg-yellow-500/10 border border-yellow-500/20 text-yellow-400'
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-slate-500/10 border border-slate-500/20 text-slate-400'
     }
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto"></div>
+          <p className="mt-4 text-slate-300">Loading dashboard...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
       {/* Header */}
-      <header className="bg-white shadow-sm">
+      <header className="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-gray-900">PathforAll</h1>
-              <span className="text-sm text-gray-500">Pathologist Dashboard</span>
+              <div className="flex items-center space-x-2">
+                <Microscope className="h-8 w-8 text-teal-400" />
+                <h1 className="text-2xl font-bold text-white">PathforAll</h1>
+              </div>
+              <span className="text-sm text-slate-400">Pathologist Dashboard</span>
             </div>
             <div className="flex items-center space-x-4">
               <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">{userProfile?.full_name || 'User'}</p>
-                <p className="text-xs text-gray-500">{userProfile?.specialty || 'Pathologist'}</p>
+                <p className="text-sm font-medium text-white">{userProfile?.full_name || 'User'}</p>
+                <p className="text-xs text-slate-400">{userProfile?.specialty || 'Pathologist'}</p>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
+                className="flex items-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition-colors shadow-lg"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
@@ -291,7 +295,7 @@ export default function PathologistDashboard() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Navigation Tabs */}
-        <div className="border-b border-gray-200 mb-8">
+        <div className="border-b border-slate-700/50 mb-8">
           <nav className="-mb-px flex space-x-8">
             {[
               { id: 'overview', label: 'Overview', icon: BarChart3 },
@@ -301,10 +305,10 @@ export default function PathologistDashboard() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as 'overview' | 'tests' | 'history')}
-                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm ${
+                className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
-                    ? 'border-indigo-500 text-indigo-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? 'border-teal-500 text-teal-400'
+                    : 'border-transparent text-slate-400 hover:text-slate-300 hover:border-slate-600'
                 }`}
               >
                 <tab.icon className="h-5 w-5" />
@@ -319,75 +323,75 @@ export default function PathologistDashboard() {
           <div className="space-y-6">
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white rounded-lg shadow p-6">
+              <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl shadow-lg p-6">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <FileText className="h-8 w-8 text-indigo-600" />
+                    <FileText className="h-8 w-8 text-teal-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">Total Assigned</p>
-                    <p className="text-2xl font-semibold text-gray-900">{stats.totalAssigned}</p>
+                    <p className="text-sm font-medium text-slate-400">Total Assigned</p>
+                    <p className="text-2xl font-semibold text-white">{stats.totalAssigned}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow p-6">
+              <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl shadow-lg p-6">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <Clock className="h-8 w-8 text-yellow-600" />
+                    <Clock className="h-8 w-8 text-yellow-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">Pending Tests</p>
-                    <p className="text-2xl font-semibold text-gray-900">{stats.pendingTests}</p>
+                    <p className="text-sm font-medium text-slate-400">Pending Tests</p>
+                    <p className="text-2xl font-semibold text-white">{stats.pendingTests}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow p-6">
+              <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl shadow-lg p-6">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
+                    <CheckCircle className="h-8 w-8 text-green-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">Completed Tests</p>
-                    <p className="text-2xl font-semibold text-gray-900">{stats.completedTests}</p>
+                    <p className="text-sm font-medium text-slate-400">Completed Tests</p>
+                    <p className="text-2xl font-semibold text-white">{stats.completedTests}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow p-6">
+              <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl shadow-lg p-6">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <BarChart3 className="h-8 w-8 text-purple-600" />
+                    <BarChart3 className="h-8 w-8 text-cyan-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-500">Total Cases</p>
-                    <p className="text-2xl font-semibold text-gray-900">{stats.totalCases}</p>
+                    <p className="text-sm font-medium text-slate-400">Total Cases</p>
+                    <p className="text-2xl font-semibold text-white">{stats.totalCases}</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Recent Tests */}
-            <div className="bg-white rounded-lg shadow">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg font-medium text-gray-900">Recent Tests</h3>
+            <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl shadow-lg">
+              <div className="px-6 py-4 border-b border-slate-700/50">
+                <h3 className="text-lg font-medium text-white">Recent Tests</h3>
               </div>
               <div className="p-6">
                 {assignedTests.length === 0 ? (
                   <div className="text-center py-8">
-                    <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500">No tests assigned yet</p>
+                    <FileText className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                    <p className="text-slate-400">No tests assigned yet</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {assignedTests.slice(0, 5).map(test => (
-                      <div key={test.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                      <div key={test.id} className="flex items-center justify-between p-4 bg-slate-900/50 border border-slate-700/50 rounded-xl">
                         <div className="flex items-center space-x-4">
                           {getStatusIcon(test.status)}
                           <div>
-                            <h4 className="font-medium text-gray-900">{test.title}</h4>
-                            <p className="text-sm text-gray-500">{test.case_count} cases</p>
+                            <h4 className="font-medium text-white">{test.title}</h4>
+                            <p className="text-sm text-slate-400">{test.case_count} cases</p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-2">
@@ -397,7 +401,7 @@ export default function PathologistDashboard() {
                           {(test.status === 'pending' || test.status === 'assigned') && (
                             <button
                               onClick={() => handleStartTest(test.test_session_id)}
-                              className="flex items-center space-x-1 bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-indigo-700 text-sm"
+                              className="flex items-center space-x-1 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white px-3 py-1 rounded-xl text-sm shadow-lg shadow-teal-500/25 transition-all"
                             >
                               <Play className="h-4 w-4" />
                               <span>Start</span>
@@ -406,7 +410,7 @@ export default function PathologistDashboard() {
                           {test.status === 'in_progress' && (
                             <button
                               onClick={() => handleStartTest(test.test_session_id)}
-                              className="flex items-center space-x-1 bg-yellow-600 text-white px-3 py-1 rounded-md hover:bg-yellow-700 text-sm"
+                              className="flex items-center space-x-1 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 hover:bg-yellow-500/20 px-3 py-1 rounded-xl text-sm transition-all"
                             >
                               <Play className="h-4 w-4" />
                               <span>Continue</span>
@@ -415,7 +419,7 @@ export default function PathologistDashboard() {
                           {test.status === 'completed' && (
                             <button
                               onClick={() => handleViewResults(test.test_session_id)}
-                              className="flex items-center space-x-1 bg-gray-600 text-white px-3 py-1 rounded-md hover:bg-gray-700 text-sm"
+                              className="flex items-center space-x-1 bg-slate-700 hover:bg-slate-600 text-white px-3 py-1 rounded-xl text-sm transition-all"
                             >
                               <Eye className="h-4 w-4" />
                               <span>View</span>
@@ -433,54 +437,54 @@ export default function PathologistDashboard() {
 
         {/* Tests Tab */}
         {activeTab === 'tests' && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">My Assigned Tests</h3>
+          <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl shadow-lg">
+            <div className="px-6 py-4 border-b border-slate-700/50">
+              <h3 className="text-lg font-medium text-white">My Assigned Tests</h3>
             </div>
             <div className="p-6">
               {assignedTests.length === 0 ? (
                 <div className="text-center py-8">
-                  <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No tests assigned yet</p>
+                  <FileText className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                  <p className="text-slate-400">No tests assigned yet</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {assignedTests.map(test => (
-                    <div key={test.id} className="border border-gray-200 rounded-lg p-6">
+                    <div key={test.id} className="bg-slate-900/50 border border-slate-700/50 rounded-xl p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center space-x-3 mb-2">
                             {getStatusIcon(test.status)}
-                            <h4 className="text-lg font-medium text-gray-900">{test.title}</h4>
+                            <h4 className="text-lg font-medium text-white">{test.title}</h4>
                             <span className={`px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(test.status)}`}>
                               {test.status.replace('_', ' ')}
                             </span>
                           </div>
-                          <p className="text-gray-600 mb-4">{test.description}</p>
-                          
+                          <p className="text-slate-300 mb-4">{test.description}</p>
+
                           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
                             <div>
-                              <p className="text-gray-500">Cases</p>
-                              <p className="font-medium">{test.case_count}</p>
+                              <p className="text-slate-400">Cases</p>
+                              <p className="font-medium text-white">{test.case_count}</p>
                             </div>
                             <div>
-                              <p className="text-gray-500">Assigned</p>
-                              <p className="font-medium">{formatDate(test.assigned_at)}</p>
+                              <p className="text-slate-400">Assigned</p>
+                              <p className="font-medium text-white">{formatDate(test.assigned_at)}</p>
                             </div>
                             {test.completed_at && (
                               <div>
-                                <p className="text-gray-500">Completed</p>
-                                <p className="font-medium">{formatDate(test.completed_at)}</p>
+                                <p className="text-slate-400">Completed</p>
+                                <p className="font-medium text-white">{formatDate(test.completed_at)}</p>
                               </div>
                             )}
                           </div>
                         </div>
-                        
+
                         <div className="ml-6 flex flex-col space-y-2">
                           {(test.status === 'pending' || test.status === 'assigned') && (
                             <button
                               onClick={() => handleStartTest(test.test_session_id)}
-                              className="flex items-center space-x-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                              className="flex items-center space-x-2 bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-white px-4 py-2 rounded-xl shadow-lg shadow-teal-500/25 transition-all"
                             >
                               <Play className="h-4 w-4" />
                               <span>Start Test</span>
@@ -489,7 +493,7 @@ export default function PathologistDashboard() {
                           {test.status === 'in_progress' && (
                             <button
                               onClick={() => handleStartTest(test.test_session_id)}
-                              className="flex items-center space-x-2 bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700"
+                              className="flex items-center space-x-2 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 hover:bg-yellow-500/20 px-4 py-2 rounded-xl transition-all"
                             >
                               <Play className="h-4 w-4" />
                               <span>Continue Test</span>
@@ -498,7 +502,7 @@ export default function PathologistDashboard() {
                           {test.status === 'completed' && (
                             <button
                               onClick={() => handleViewResults(test.test_session_id)}
-                              className="flex items-center space-x-2 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+                              className="flex items-center space-x-2 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-xl transition-all"
                             >
                               <Eye className="h-4 w-4" />
                               <span>View Results</span>
@@ -516,35 +520,35 @@ export default function PathologistDashboard() {
 
         {/* History Tab */}
         {activeTab === 'history' && (
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Test History</h3>
+          <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl shadow-lg">
+            <div className="px-6 py-4 border-b border-slate-700/50">
+              <h3 className="text-lg font-medium text-white">Test History</h3>
             </div>
             <div className="p-6">
               {assignedTests.filter(t => t.status === 'completed').length === 0 ? (
                 <div className="text-center py-8">
-                  <CheckCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No completed tests yet</p>
+                  <CheckCircle className="h-12 w-12 text-slate-500 mx-auto mb-4" />
+                  <p className="text-slate-400">No completed tests yet</p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {assignedTests
                     .filter(t => t.status === 'completed')
                     .map(test => (
-                      <div key={test.id} className="border border-gray-200 rounded-lg p-4">
+                      <div key={test.id} className="bg-slate-900/50 border border-slate-700/50 rounded-xl p-4">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-3">
-                            <CheckCircle className="h-5 w-5 text-green-500" />
+                            <CheckCircle className="h-5 w-5 text-green-400" />
                             <div>
-                              <h4 className="font-medium text-gray-900">{test.title}</h4>
-                              <p className="text-sm text-gray-500">
+                              <h4 className="font-medium text-white">{test.title}</h4>
+                              <p className="text-sm text-slate-400">
                                 Completed {test.completed_at && formatDate(test.completed_at)}
                               </p>
                             </div>
                           </div>
                           <button
                             onClick={() => handleViewResults(test.test_session_id)}
-                            className="flex items-center space-x-1 bg-gray-600 text-white px-3 py-1 rounded-md hover:bg-gray-700 text-sm"
+                            className="flex items-center space-x-1 bg-slate-700 hover:bg-slate-600 text-white px-3 py-1 rounded-xl text-sm transition-all"
                           >
                             <Eye className="h-4 w-4" />
                             <span>View Results</span>
