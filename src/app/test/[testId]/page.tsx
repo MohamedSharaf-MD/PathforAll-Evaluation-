@@ -416,13 +416,13 @@ export default function TestInterface() {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <h1 className="text-lg font-semibold text-white">{testSession.title}</h1>
-              <div className="text-sm text-slate-400">
+              <div className="text-sm text-slate-300">
                 Case {currentCaseIndex + 1} of {testSession.cases.length}
               </div>
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-sm text-slate-400">
+              <div className="flex items-center space-x-2 text-sm text-slate-300">
                 <Clock className="h-4 w-4" />
                 <span>No time limit</span>
               </div>
@@ -454,7 +454,7 @@ export default function TestInterface() {
               <div className="p-4 border-b border-slate-700/50 flex justify-between items-center">
                 <h2 className="text-lg font-medium text-white">{currentCase.title}</h2>
                 {saving && (
-                  <div className="flex items-center text-sm text-slate-400">
+                  <div className="flex items-center text-sm text-slate-300">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-teal-500 mr-2"></div>
                     Saving...
                   </div>
@@ -525,7 +525,7 @@ export default function TestInterface() {
                     {savingProgress ? 'Saving...' : 'Save Progress'}
                   </button>
 
-                  <span className="text-sm text-slate-400">
+                  <span className="text-sm text-slate-300">
                     {currentCaseIndex + 1} of {testSession.cases.length}
                   </span>
                 </div>
@@ -534,7 +534,7 @@ export default function TestInterface() {
                   <button
                     onClick={previousCase}
                     disabled={currentCaseIndex === 0}
-                    className="flex items-center space-x-2 px-4 py-2 text-slate-400 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="flex items-center space-x-2 px-4 py-2 text-slate-300 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <ChevronLeft className="h-4 w-4" />
                     <span>Previous</span>
