@@ -17,7 +17,7 @@ export default function HomePage() {
             <div className="flex items-center space-x-3">
               <Link
                 href="/login"
-                className="text-slate-300 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="text-slate-200 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               >
                 Sign In
               </Link>
@@ -45,7 +45,7 @@ export default function HomePage() {
                 Assessment Made Simple
               </span>
             </h1>
-            <p className="text-lg text-slate-300 max-w-2xl mx-auto mb-8">
+            <p className="text-lg text-slate-200 max-w-2xl mx-auto mb-8">
               A streamlined platform for pathologists to evaluate whole slide images
               with precision, featuring advanced case management and comprehensive assessment tools.
             </p>
@@ -72,28 +72,28 @@ export default function HomePage() {
                 <Microscope className="w-5 h-5 text-teal-400" />
               </div>
               <h3 className="text-white font-semibold mb-1 text-sm lg:text-base">WSI Viewer</h3>
-              <p className="text-slate-300 text-xs lg:text-sm">High-resolution slide viewing with zoom and pan controls</p>
+              <p className="text-slate-200 text-xs lg:text-sm">High-resolution slide viewing with zoom and pan controls</p>
             </div>
             <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-5 hover:border-teal-500/30 transition-colors">
               <div className="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center mb-3">
                 <Users className="w-5 h-5 text-cyan-400" />
               </div>
               <h3 className="text-white font-semibold mb-1 text-sm lg:text-base">Case Management</h3>
-              <p className="text-slate-300 text-xs lg:text-sm">Organized test sessions with progress tracking</p>
+              <p className="text-slate-200 text-xs lg:text-sm">Organized test sessions with progress tracking</p>
             </div>
             <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-5 hover:border-teal-500/30 transition-colors">
               <div className="w-10 h-10 bg-teal-500/10 rounded-lg flex items-center justify-center mb-3">
                 <BarChart3 className="w-5 h-5 text-teal-400" />
               </div>
               <h3 className="text-white font-semibold mb-1 text-sm lg:text-base">Analytics</h3>
-              <p className="text-slate-300 text-xs lg:text-sm">Detailed performance metrics and reporting</p>
+              <p className="text-slate-200 text-xs lg:text-sm">Detailed performance metrics and reporting</p>
             </div>
             <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-5 hover:border-teal-500/30 transition-colors">
               <div className="w-10 h-10 bg-cyan-500/10 rounded-lg flex items-center justify-center mb-3">
                 <Shield className="w-5 h-5 text-cyan-400" />
               </div>
               <h3 className="text-white font-semibold mb-1 text-sm lg:text-base">Secure</h3>
-              <p className="text-slate-300 text-xs lg:text-sm">Enterprise-grade security for medical data</p>
+              <p className="text-slate-200 text-xs lg:text-sm">Enterprise-grade security for medical data</p>
             </div>
           </div>
         </div>
@@ -103,11 +103,11 @@ export default function HomePage() {
       <footer className="border-t border-slate-700/50 bg-slate-900/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center space-x-2 text-slate-300 text-sm">
+            <div className="flex items-center space-x-2 text-slate-200 text-sm">
               <div className="w-6 h-6 bg-gradient-to-br from-teal-400 to-cyan-500 rounded flex items-center justify-center">
                 <Microscope className="w-3.5 h-3.5 text-white" />
               </div>
-              <span className="font-medium text-slate-300">PathforAll</span>
+              <span className="font-medium text-slate-200">PathforAll</span>
               <span className="text-slate-600">|</span>
               <span>Developed by Mohamed Sharaf, MD</span>
               <span className="text-slate-600">|</span>
@@ -116,13 +116,13 @@ export default function HomePage() {
             <div className="flex items-center space-x-4 text-sm">
               <a
                 href="mailto:Mohamed.sharaf@nyulangone.org"
-                className="inline-flex items-center text-slate-300 hover:text-teal-400 transition-colors"
+                className="inline-flex items-center text-slate-200 hover:text-teal-400 transition-colors"
               >
                 <Mail className="w-4 h-4 mr-1.5" />
                 Contact
               </a>
               <span className="text-slate-600">|</span>
-              <span className="text-slate-300">© 2025 PathforAll</span>
+              <span className="text-slate-200">© 2025 PathforAll</span>
             </div>
           </div>
         </div>

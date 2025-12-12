@@ -394,7 +394,7 @@ export default function AdminDashboard() {
       <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
-          <p className="text-slate-300">Loading admin dashboard...</p>
+          <p className="text-slate-200">Loading admin dashboard...</p>
         </div>
       </div>
     )
@@ -413,7 +413,7 @@ export default function AdminDashboard() {
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold text-white">PathforAll Admin</h1>
-                  <span className="text-sm text-slate-300">Case Evaluation Management</span>
+                  <span className="text-sm text-slate-200">Case Evaluation Management</span>
                 </div>
               </div>
             </div>
@@ -429,7 +429,7 @@ export default function AdminDashboard() {
 
               <button
                 onClick={handleLogout}
-                className="text-slate-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="text-slate-200 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 Sign Out
               </button>
@@ -454,7 +454,7 @@ export default function AdminDashboard() {
                 className={`flex items-center space-x-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                   activeTab === tab.id
                     ? 'border-teal-500 text-teal-400'
-                    : 'border-transparent text-slate-300 hover:text-slate-300 hover:border-slate-600'
+                    : 'border-transparent text-slate-200 hover:text-slate-200 hover:border-slate-600'
                 }`}
               >
                 <tab.icon className="h-5 w-5" />
@@ -475,7 +475,7 @@ export default function AdminDashboard() {
                     <Users className="h-6 w-6 text-teal-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-300">Total Pathologists</p>
+                    <p className="text-sm font-medium text-slate-200">Total Pathologists</p>
                     <p className="text-2xl font-bold text-white">{stats.totalUsers}</p>
                   </div>
                 </div>
@@ -487,7 +487,7 @@ export default function AdminDashboard() {
                     <FileText className="h-6 w-6 text-cyan-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-300">Active Tests</p>
+                    <p className="text-sm font-medium text-slate-200">Active Tests</p>
                     <p className="text-2xl font-bold text-white">{stats.activeTests}</p>
                   </div>
                 </div>
@@ -499,7 +499,7 @@ export default function AdminDashboard() {
                     <CheckCircle className="h-6 w-6 text-emerald-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-300">Completed Tests</p>
+                    <p className="text-sm font-medium text-slate-200">Completed Tests</p>
                     <p className="text-2xl font-bold text-white">{stats.completedTests}</p>
                   </div>
                 </div>
@@ -511,7 +511,7 @@ export default function AdminDashboard() {
                     <BarChart3 className="h-6 w-6 text-violet-400" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-slate-300">Total Responses</p>
+                    <p className="text-sm font-medium text-slate-200">Total Responses</p>
                     <p className="text-2xl font-bold text-white">{stats.totalResponses}</p>
                   </div>
                 </div>
@@ -529,17 +529,17 @@ export default function AdminDashboard() {
                     <div key={session.id} className="flex items-center justify-between py-3 border-b border-slate-700/30 last:border-b-0">
                       <div>
                         <h4 className="font-medium text-white">{session.title}</h4>
-                        <p className="text-sm text-slate-300">{session.description}</p>
+                        <p className="text-sm text-slate-200">{session.description}</p>
                       </div>
                       <div className="flex items-center space-x-4">
                         <span className={`px-3 py-1 text-xs font-medium rounded-full border ${
                           session.is_active
                             ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
-                            : 'bg-slate-500/10 border-slate-500/20 text-slate-300'
+                            : 'bg-slate-500/10 border-slate-500/20 text-slate-200'
                         }`}>
                           {session.is_active ? 'Active' : 'Inactive'}
                         </span>
-                        <span className="text-sm text-slate-300">
+                        <span className="text-sm text-slate-200">
                           {session.completed_responses}/{session.assigned_users} completed
                         </span>
                       </div>
@@ -557,13 +557,13 @@ export default function AdminDashboard() {
             {/* Search and Actions */}
             <div className="flex justify-between items-center">
               <div className="relative">
-                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-300" />
+                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-200" />
                 <input
                   type="text"
                   placeholder="Search test sessions..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  className="pl-10 pr-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 />
               </div>
 
@@ -581,22 +581,22 @@ export default function AdminDashboard() {
               <table className="min-w-full divide-y divide-slate-700/50">
                 <thead className="bg-slate-900/50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Test Session
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Cases
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Assigned
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Completed
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
@@ -607,23 +607,23 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4">
                         <div>
                           <div className="text-sm font-medium text-white">{session.title}</div>
-                          <div className="text-sm text-slate-300">{session.description}</div>
+                          <div className="text-sm text-slate-200">{session.description}</div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-300">
+                      <td className="px-6 py-4 text-sm text-slate-200">
                         {session.case_count}
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-300">
+                      <td className="px-6 py-4 text-sm text-slate-200">
                         {session.assigned_users}
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-300">
+                      <td className="px-6 py-4 text-sm text-slate-200">
                         {session.completed_responses}
                       </td>
                       <td className="px-6 py-4">
                         <span className={`px-3 py-1 text-xs font-medium rounded-full border ${
                           session.is_active
                             ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
-                            : 'bg-slate-500/10 border-slate-500/20 text-slate-300'
+                            : 'bg-slate-500/10 border-slate-500/20 text-slate-200'
                         }`}>
                           {session.is_active ? 'Active' : 'Inactive'}
                         </span>
@@ -667,13 +667,13 @@ export default function AdminDashboard() {
             {/* Search and Actions */}
             <div className="flex justify-between items-center">
               <div className="relative flex-1 max-w-md">
-                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-300" />
+                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-200" />
                 <input
                   type="text"
                   placeholder="Search users..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  className="w-full pl-10 pr-4 py-2 bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 />
               </div>
               <button
@@ -690,19 +690,19 @@ export default function AdminDashboard() {
               <table className="min-w-full divide-y divide-slate-700/50">
                 <thead className="bg-slate-900/50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       User
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Specialty
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Institution
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Role
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
                       Joined
                     </th>
                   </tr>
@@ -713,13 +713,13 @@ export default function AdminDashboard() {
                       <td className="px-6 py-4">
                         <div>
                           <div className="text-sm font-medium text-white">{user.full_name}</div>
-                          <div className="text-sm text-slate-300">{user.email}</div>
+                          <div className="text-sm text-slate-200">{user.email}</div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-300">
+                      <td className="px-6 py-4 text-sm text-slate-200">
                         {user.specialty || 'Not specified'}
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-300">
+                      <td className="px-6 py-4 text-sm text-slate-200">
                         {user.institution || 'Not specified'}
                       </td>
                       <td className="px-6 py-4">
@@ -731,7 +731,7 @@ export default function AdminDashboard() {
                           {user.role}
                         </span>
                       </td>
-                      <td className="px-6 py-4 text-sm text-slate-300">
+                      <td className="px-6 py-4 text-sm text-slate-200">
                         {new Date(user.created_at).toLocaleDateString()}
                       </td>
                     </tr>
@@ -746,9 +746,9 @@ export default function AdminDashboard() {
         {activeTab === 'analytics' && (
           <div className="space-y-6">
             <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-8 text-center">
-              <BarChart3 className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+              <BarChart3 className="h-12 w-12 text-slate-200 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-white mb-2">Advanced Analytics</h3>
-              <p className="text-slate-300">
+              <p className="text-slate-200">
                 Detailed analytics and reporting features will be available in the next phase of development.
               </p>
             </div>

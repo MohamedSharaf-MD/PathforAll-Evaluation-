@@ -282,7 +282,7 @@ export default function TestAssignmentPage() {
       <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
-          <p className="text-slate-300">Loading test assignment data...</p>
+          <p className="text-slate-200">Loading test assignment data...</p>
         </div>
       </div>
     )
@@ -294,7 +294,7 @@ export default function TestAssignmentPage() {
         <div className="text-center">
           <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-white mb-2">Test Not Found</h2>
-          <p className="text-slate-300">The requested test session could not be loaded.</p>
+          <p className="text-slate-200">The requested test session could not be loaded.</p>
         </div>
       </div>
     )
@@ -309,14 +309,14 @@ export default function TestAssignmentPage() {
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => router.push(`/admin/test/${params.testId}`)}
-                className="text-slate-300 hover:text-white transition-colors"
+                className="text-slate-200 hover:text-white transition-colors"
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
               <Microscope className="h-6 w-6 text-teal-400" />
               <div>
                 <h1 className="text-xl font-semibold text-white">Assign Test</h1>
-                <p className="text-sm text-slate-300">{testSession.title}</p>
+                <p className="text-sm text-slate-200">{testSession.title}</p>
               </div>
             </div>
 
@@ -338,18 +338,18 @@ export default function TestAssignmentPage() {
           <h2 className="text-lg font-medium text-white mb-4">Test Session Details</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <dt className="text-sm font-medium text-slate-300">Title</dt>
+              <dt className="text-sm font-medium text-slate-200">Title</dt>
               <dd className="text-lg text-white">{testSession.title}</dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-slate-300">Number of Cases</dt>
+              <dt className="text-sm font-medium text-slate-200">Number of Cases</dt>
               <dd className="text-lg text-white">{testSession.case_count}</dd>
             </div>
             <div>
-              <dt className="text-sm font-medium text-slate-300">Status</dt>
+              <dt className="text-sm font-medium text-slate-200">Status</dt>
               <dd>
                 <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                  testSession.is_active ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-slate-700/50 text-slate-300 border border-slate-600/50'
+                  testSession.is_active ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-slate-700/50 text-slate-200 border border-slate-600/50'
                 }`}>
                   {testSession.is_active ? 'Active' : 'Inactive'}
                 </span>
@@ -358,8 +358,8 @@ export default function TestAssignmentPage() {
           </div>
           {testSession.description && (
             <div className="mt-4">
-              <dt className="text-sm font-medium text-slate-300">Description</dt>
-              <dd className="text-slate-300">{testSession.description}</dd>
+              <dt className="text-sm font-medium text-slate-200">Description</dt>
+              <dd className="text-slate-200">{testSession.description}</dd>
             </div>
           )}
         </div>
@@ -370,16 +370,16 @@ export default function TestAssignmentPage() {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-slate-200 mb-2">
                 Deadline (Optional)
               </label>
               <div className="relative">
-                <Calendar className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-300" />
+                <Calendar className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-200" />
                 <input
                   type="date"
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
-                  className="pl-10 pr-4 py-2 w-full bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  className="pl-10 pr-4 py-2 w-full bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 />
               </div>
             </div>
@@ -392,7 +392,7 @@ export default function TestAssignmentPage() {
                 onChange={(e) => setSendNotification(e.target.checked)}
                 className="h-4 w-4 text-teal-500 focus:ring-teal-500 border-slate-600 rounded bg-slate-900/50 checked:bg-teal-500"
               />
-              <label htmlFor="send-notification" className="ml-2 block text-sm text-slate-300">
+              <label htmlFor="send-notification" className="ml-2 block text-sm text-slate-200">
                 Send email notifications to assigned pathologists
               </label>
             </div>
@@ -415,7 +415,7 @@ export default function TestAssignmentPage() {
                 </button>
                 <button
                   onClick={selectNone}
-                  className="text-slate-300 hover:text-slate-300 text-sm font-medium transition-colors"
+                  className="text-slate-200 hover:text-slate-200 text-sm font-medium transition-colors"
                 >
                   Select None
                 </button>
@@ -424,13 +424,13 @@ export default function TestAssignmentPage() {
 
             <div className="mt-4">
               <div className="relative">
-                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-300" />
+                <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-200" />
                 <input
                   type="text"
                   placeholder="Search pathologists..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-2 w-full bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                  className="pl-10 pr-4 py-2 w-full bg-slate-900/50 border border-slate-700 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                 />
               </div>
             </div>
@@ -441,7 +441,7 @@ export default function TestAssignmentPage() {
               <div className="text-center py-8">
                 <Users className="h-12 w-12 text-slate-600 mx-auto mb-4" />
                 <h3 className="text-lg font-medium text-white mb-2">No pathologists found</h3>
-                <p className="text-slate-300">
+                <p className="text-slate-200">
                   {searchTerm ? 'Try adjusting your search criteria.' : 'No pathologists are registered in the system.'}
                 </p>
               </div>
@@ -473,7 +473,7 @@ export default function TestAssignmentPage() {
                             {getStatusIcon(pathologist)}
                           </div>
 
-                          <div className="mt-1 flex items-center space-x-4 text-sm text-slate-300">
+                          <div className="mt-1 flex items-center space-x-4 text-sm text-slate-200">
                             <div className="flex items-center space-x-1">
                               <Mail className="h-4 w-4" />
                               <span>{pathologist.email}</span>
@@ -497,7 +497,7 @@ export default function TestAssignmentPage() {
                       </div>
 
                       <div className="text-right">
-                        <div className="text-sm text-slate-300">
+                        <div className="text-sm text-slate-200">
                           {getStatusText(pathologist)}
                         </div>
                       </div>
